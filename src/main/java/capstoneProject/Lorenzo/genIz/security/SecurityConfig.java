@@ -19,6 +19,11 @@ public class SecurityConfig {
         )
         .oauth2Login(Customizer.withDefaults())
         .formLogin(Customizer.withDefaults())
+        //logout config, by hitting baseUrl/logout the user gets redirected to a default logout page.
+        .logout(logout -> {
+            logout.logoutSuccessUrl("/")
+            .permitAll();
+        })
         .build();
     }
 }
