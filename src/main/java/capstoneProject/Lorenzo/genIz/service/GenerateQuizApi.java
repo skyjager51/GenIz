@@ -35,13 +35,13 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
 
     //creating the API request json body 
     @Override
-    public String createApiBody() {
+    public String createApiBody(String systemPrompt, String userText) {
 
         //creating the class 
         ApiCallRequest apiCallRequest = new ApiCallRequest();
         apiCallRequest.setModel(modelName);
-        apiCallRequest.addField("system", "you are an expert in CPUs");
-        apiCallRequest.addField("user", "explain the difference of performance between 15nm and 3nm");
+        apiCallRequest.addField("system", systemPrompt);
+        apiCallRequest.addField("user", userText);
 
         //map the class to it's json string 
         return gson.toJson(apiCallRequest);
