@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 
-import capstoneProject.Lorenzo.genIz.api_format.ApiCallRequest;
+import capstoneProject.Lorenzo.genIz.DTO.QuizDataDto;
+import capstoneProject.Lorenzo.genIz.api_format.request.ApiCallRequest;
+import capstoneProject.Lorenzo.genIz.api_format.response.ApiCallResponse;
 
 @Service
 public class GenerateQuizApi implements GenerateQuizApiInterface{
@@ -27,6 +29,9 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
     //initializing the HTTP client
     HttpClient httpClient = HttpClient.newHttpClient();
 
+    //initializing Gson
+    Gson gson = new Gson();
+
 
     //creating the API request json body 
     @Override
@@ -39,8 +44,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
         apiCallRequest.addField("user", "explain the difference of performance between 15nm and 3nm");
 
         //map the class to it's json string 
-        Gson gsonRequest = new Gson();
-        return gsonRequest.toJson(apiCallRequest);
+        return gson.toJson(apiCallRequest);
     }
 
     //creating the HTTP request to query the model
@@ -56,7 +60,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
                 .build();
 
         } catch (URISyntaxException e) {
-            System.out.println("error: " + e);
+            throw new RuntimeException("something went wrong", e);
         } 
 
         return httpRequest;
@@ -64,16 +68,20 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
 
     //retrieving the response by sending the request to the model 
     @Override
-    public HttpResponse<String> getApiResponse(HttpRequest apiRequest){
+    public QuizDataDto getApiResponse(HttpRequest apiRequest){
         //using the http client to send the request to the running model 
-        HttpResponse<String> response = null;
+        HttpResponse<String> rawResponse;
         try{
-            response = httpClient.send(apiRequest, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e){
-            System.out.println("error: " + e);
-        }
+            rawResponse = httpClient.send(apiRequest, HttpResponse.BodyHandlers.ofString());
 
-        return response;
+            //converting the response to a DAO object
+            ApiCallResponse convertResponse = gson.fromJson(rawResponse.body(), ApiCallResponse.class);
+            return new QuizDataDto(convertResponse.getChoices().get(0).getMessage().getContent(), 
+             convertResponse.getUsage().getTotal_tokens());
+
+        } catch (IOException | InterruptedException e){
+            throw new RuntimeException("something went wrong", e);
+        }
     }    
 
 }

@@ -1,4 +1,4 @@
-package capstoneProject.Lorenzo.genIz.api_format;
+package capstoneProject.Lorenzo.genIz.api_format.request;
 
 import java.util.ArrayList;
 import java.util.HashMap;

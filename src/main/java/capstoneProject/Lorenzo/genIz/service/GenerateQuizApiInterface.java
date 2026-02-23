@@ -1,7 +1,8 @@
 package capstoneProject.Lorenzo.genIz.service;
 
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+
+import capstoneProject.Lorenzo.genIz.DTO.QuizDataDto;
 
 public interface GenerateQuizApiInterface {
 
@@ -9,5 +10,5 @@ public interface GenerateQuizApiInterface {
 
     public HttpRequest apiCallRequest(String requestBody);
 
-    public HttpResponse<String> getApiResponse(HttpRequest apiRequest);
+    public QuizDataDto getApiResponse(HttpRequest apiRequest);
 }
