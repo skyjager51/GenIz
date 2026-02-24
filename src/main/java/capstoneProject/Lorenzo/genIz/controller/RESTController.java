@@ -1,15 +1,13 @@
 package capstoneProject.Lorenzo.genIz.controller;
 
-import java.net.http.HttpRequest;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import capstoneProject.Lorenzo.genIz.DTO.QuizDataDto;
-import capstoneProject.Lorenzo.genIz.api_format.request.request_parameters.QuizGenParameter;
-import capstoneProject.Lorenzo.genIz.service.GenerateQuizApi;
+import capstoneProject.Lorenzo.genIz.DTO.ResponseDataDto;
+import capstoneProject.Lorenzo.genIz.service.LocalModelApiFlowAggregator;
 
 @RestController
 public class RESTController {
@@ -19,10 +17,10 @@ public class RESTController {
     private String userString; 
 
     //injecting the services utilities 
-    private final GenerateQuizApi generateQuizApi;
+    LocalModelApiFlowAggregator localModelApiFlowAggregator;
 
-    public RESTController(GenerateQuizApi generateQuizApi){
-        this.generateQuizApi = generateQuizApi;
+    public RESTController(LocalModelApiFlowAggregator localModelApiFlowAggregator) {
+        this.localModelApiFlowAggregator = localModelApiFlowAggregator;
     }
 
     @GetMapping("/")
@@ -37,15 +35,12 @@ public class RESTController {
 
     //sample endpoint for testing purposes, in the prod app it will need to be a POST
     @GetMapping("/ai")
-    public QuizDataDto aiResponse() {
+    public ResponseDataDto aiResponse() {
 
-        //if one of the methods wll return an error, the controller will intercept it and return a server error (500)
-        String apiBody = generateQuizApi.createApiBody(QuizGenParameter.getSystemprompt(), userString);
+        ResponseDataDto performApiCall = localModelApiFlowAggregator.performApiCall(userString);
 
-        HttpRequest apiRequest = generateQuizApi.apiCallRequest(apiBody);
+        ResponseDataDto validateApiResponse = localModelApiFlowAggregator.validateApiCallResult(performApiCall);
 
-        QuizDataDto apiResponse = generateQuizApi.getApiResponse(apiRequest);
-
-        return apiResponse;
+        return validateApiResponse;
     }
 }

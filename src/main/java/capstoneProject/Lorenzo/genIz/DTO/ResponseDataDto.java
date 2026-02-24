@@ -1,10 +1,10 @@
 package capstoneProject.Lorenzo.genIz.DTO;
 
-public class QuizDataDto {
+public class ResponseDataDto {
     private String llmOutput;
     private String tokenCount;
     
-    public QuizDataDto(String llmOutput, String tokenCount) {
+    public ResponseDataDto(String llmOutput, String tokenCount) {
         this.llmOutput = llmOutput;
         this.tokenCount = tokenCount;
     }

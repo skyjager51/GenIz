@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 
-import capstoneProject.Lorenzo.genIz.DTO.QuizDataDto;
+import capstoneProject.Lorenzo.genIz.DTO.ResponseDataDto;
 import capstoneProject.Lorenzo.genIz.api_format.request.ApiCallRequest;
 import capstoneProject.Lorenzo.genIz.api_format.response.ApiCallResponse;
 
@@ -68,7 +68,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
 
     //retrieving the response by sending the request to the model 
     @Override
-    public QuizDataDto getApiResponse(HttpRequest apiRequest){
+    public ResponseDataDto getApiResponse(HttpRequest apiRequest){
         //using the http client to send the request to the running model 
         HttpResponse<String> rawResponse;
         try{
@@ -76,7 +76,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
 
             //converting the response to a DTO object
             ApiCallResponse convertResponse = gson.fromJson(rawResponse.body(), ApiCallResponse.class);
-            return new QuizDataDto(convertResponse.getChoices().get(0).getMessage().getContent(), 
+            return new ResponseDataDto(convertResponse.getChoices().get(0).getMessage().getContent(), 
              convertResponse.getUsage().getTotal_tokens());
 
         } catch (IOException | InterruptedException e){

@@ -7,14 +7,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import capstoneProject.Lorenzo.genIz.DTO.QuizDataDto;
+import capstoneProject.Lorenzo.genIz.DTO.ResponseDataDto;
 
 @Service
 public class JsonValidation implements JsonValidationInterface{
 
     //retrieving the DTO created by the API call and transform it into a json object
     @Override
-    public JsonObject convertStringToJsonObject(QuizDataDto quizDataDto) {
+    public JsonObject convertStringToJsonObject(ResponseDataDto quizDataDto) {
 
         //json returned by the model 
         //since tokenCount is not a critical information, it's accettable to let the application work even without it
@@ -28,7 +28,7 @@ public class JsonValidation implements JsonValidationInterface{
 
     //validating the fields inside the API response 
     @Override
-    public QuizDataDto validateJsonObject(JsonObject objectToValidate, QuizDataDto quizDataDto) {
+    public ResponseDataDto validateJsonObject(JsonObject objectToValidate, ResponseDataDto quizDataDto) {
 
         //retrieving the quizzes array and validate content 
         JsonArray quizList = objectToValidate.getAsJsonArray("quizzes");
