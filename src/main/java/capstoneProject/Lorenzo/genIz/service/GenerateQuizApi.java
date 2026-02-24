@@ -74,7 +74,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
         try{
             rawResponse = httpClient.send(apiRequest, HttpResponse.BodyHandlers.ofString());
 
-            //converting the response to a DAO object
+            //converting the response to a DTO object
             ApiCallResponse convertResponse = gson.fromJson(rawResponse.body(), ApiCallResponse.class);
             return new QuizDataDto(convertResponse.getChoices().get(0).getMessage().getContent(), 
              convertResponse.getUsage().getTotal_tokens());
