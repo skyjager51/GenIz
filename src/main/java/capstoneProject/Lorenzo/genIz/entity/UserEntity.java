@@ -1,4 +1,4 @@
-package capstoneProject.Lorenzo.entity;
+package capstoneProject.Lorenzo.genIz.entity;
 
 import java.util.ArrayList;
 import java.util.List;
