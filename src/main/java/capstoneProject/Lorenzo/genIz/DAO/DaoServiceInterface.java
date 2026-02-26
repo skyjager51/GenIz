@@ -9,6 +9,7 @@ import capstoneProject.Lorenzo.genIz.DTO.entity_dto.DiscussionDataDto;
 import capstoneProject.Lorenzo.genIz.DTO.entity_dto.UserDataDTO;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqChatDto;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqDiscussionDto;
+import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqModelSetting;
 
 public interface DaoServiceInterface {
 
@@ -22,7 +23,7 @@ public interface DaoServiceInterface {
 
     public List<DiscussionDataDto> retrieveDiscussions(PostReqDiscussionDto postReqDiscussionDto);
 
-    public UserDataDTO manageModelSettings(UserDataDTO userDataDTO);
+    public UserDataDTO manageModelSettings(UserDataDTO userDataDTO, PostReqModelSetting postReqModelSetting);
 
     public UserDataDTO retrieveModelSettings(UserDataDTO userDataDTO);
 }

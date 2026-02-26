@@ -11,6 +11,7 @@ import capstoneProject.Lorenzo.genIz.DTO.entity_dto.DiscussionDataDto;
 import capstoneProject.Lorenzo.genIz.DTO.entity_dto.UserDataDTO;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqChatDto;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqDiscussionDto;
+import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqModelSetting;
 import capstoneProject.Lorenzo.genIz.entity.ChatEntity;
 import capstoneProject.Lorenzo.genIz.entity.DiscussionEntity;
 import capstoneProject.Lorenzo.genIz.entity.UserEntity;
@@ -122,13 +123,8 @@ public class QuizDaoServiceImpl implements DaoServiceInterface{
         chatQuery.setParameter("userId", userDataDTO.getId());
 
         //retrieve the list of chats
-        List<ChatEntity> userChats;
-        try {
-            userChats = chatQuery.getResultList();
-        } catch (Exception e) {
-            throw new NoResultException("no chats has been found for this user");
-        }
-
+        List<ChatEntity> userChats = chatQuery.getResultList();
+        
         //map the chatEntity to a list of dto
         List<ChatDataDto> listUserChatsDto = new ArrayList<>();
         for(ChatEntity chat : userChats){
@@ -196,13 +192,8 @@ public class QuizDaoServiceImpl implements DaoServiceInterface{
         discussionQuery.setParameter("currentChatId", postReqDiscussionDto.getChat_id());
 
         //query the db
-        List<DiscussionEntity> chatDiscussions;
-        try {
-            chatDiscussions = discussionQuery.getResultList();
-        } catch (Exception e) {
-            throw new NoResultException("no discussions found for that chat");
-        }
-
+        List<DiscussionEntity> chatDiscussions = discussionQuery.getResultList();
+        
         //create the discussionDto list
         List<DiscussionDataDto> listChatDiscussionDto = new ArrayList<>();
         for(DiscussionEntity discussion : chatDiscussions){
@@ -211,21 +202,51 @@ public class QuizDaoServiceImpl implements DaoServiceInterface{
             discussionDataDto.setUser_pdf_name(discussion.getUser_pdf_name());
             discussionDataDto.setQuiz_content(discussion.getQuiz_content());
             discussionDataDto.setChat_id(postReqDiscussionDto.getChat_id());
+
+            listChatDiscussionDto.add(discussionDataDto);
         } 
 
         return listChatDiscussionDto;
     }
 
+    //toggle the switch to tell the application to use the local model or the specified Internet one
     @Override
-    public UserDataDTO manageModelSettings(UserDataDTO userDataDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'manageModelSettings'");
+    @Transactional
+    public UserDataDTO manageModelSettings(UserDataDTO userDataDTO, PostReqModelSetting postReqModelSetting) {
+        
+        //retrieve the current user
+        UserEntity currentUser = entityManager.find(UserEntity.class, userDataDTO.getId());
+
+        //if the request is acutally changing the setting, do the modification, else do nothing
+        if(!currentUser.getUse_local_model().equals(postReqModelSetting.getModelSetting())){
+            currentUser.setUse_local_model(postReqModelSetting.getModelSetting());
+        }
+
+        //save the new user and map it with the new dto 
+        currentUser = entityManager.merge(currentUser);
+
+        UserDataDTO newUserDataDTO = new UserDataDTO();
+        newUserDataDTO.setId(currentUser.getId());
+        newUserDataDTO.setIdentity_provider_user_id(currentUser.getIdentity_provider_user_id());
+        newUserDataDTO.setUse_local_model(currentUser.getUse_local_model());
+
+        return newUserDataDTO;
     }
 
+    //retrieve the current model setting 
     @Override
     public UserDataDTO retrieveModelSettings(UserDataDTO userDataDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'retrieveModelSettings'");
+        
+        //retrieve the current user info 
+        UserEntity currentUser = entityManager.find(UserEntity.class, userDataDTO.getId());
+
+        //map the user dto 
+        UserDataDTO newUserDataDTO = new UserDataDTO();
+        newUserDataDTO.setId(currentUser.getId());
+        newUserDataDTO.setIdentity_provider_user_id(currentUser.getIdentity_provider_user_id());
+        newUserDataDTO.setUse_local_model(currentUser.getUse_local_model());
+
+        return newUserDataDTO;
     }
 
 }
