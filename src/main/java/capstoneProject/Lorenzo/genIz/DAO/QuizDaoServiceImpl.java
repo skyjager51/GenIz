@@ -1,17 +1,25 @@
 package capstoneProject.Lorenzo.genIz.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.stereotype.Repository;
 
-import capstoneProject.Lorenzo.genIz.DTO.ChatDataDto;
-import capstoneProject.Lorenzo.genIz.DTO.DiscussionDataDto;
-import capstoneProject.Lorenzo.genIz.DTO.UserDataDTO;
+import capstoneProject.Lorenzo.genIz.DTO.entity_dto.ChatDataDto;
+import capstoneProject.Lorenzo.genIz.DTO.entity_dto.DiscussionDataDto;
+import capstoneProject.Lorenzo.genIz.DTO.entity_dto.UserDataDTO;
+import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqChatDto;
+import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqDiscussionDto;
+import capstoneProject.Lorenzo.genIz.entity.ChatEntity;
+import capstoneProject.Lorenzo.genIz.entity.DiscussionEntity;
 import capstoneProject.Lorenzo.genIz.entity.UserEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 
+@Repository
 public class QuizDaoServiceImpl implements DaoServiceInterface{
 
     //inject entity manager to interact with DB 
@@ -24,6 +32,7 @@ public class QuizDaoServiceImpl implements DaoServiceInterface{
     //managing user login, if the user already exist, populate the DTO with user data
     //if the user does not exist, create a new user
     @Override
+    @Transactional
     public UserDataDTO manageUser(OAuth2AuthenticationToken token) {
 
         String uniqueUserIdentifier = token.getPrincipal().getAttribute("sub");
@@ -62,28 +71,149 @@ public class QuizDaoServiceImpl implements DaoServiceInterface{
         }
     }
 
+    //create a new chat based on the user id and the chat name
     @Override
-    public ChatDataDto saveChat(UserDataDTO userDataDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'saveChat'");
+    @Transactional
+    public ChatDataDto saveChat(UserDataDTO userDataDTO, PostReqChatDto postReqChatDto) {
+
+        //find the user based on the userDto
+        UserEntity currentUser = entityManager.find(UserEntity.class, userDataDTO.getId());
+        if(currentUser == null){
+            throw new IllegalArgumentException("no user found");
+        }
+        
+        //create the dto for data transfer
+        ChatDataDto chatInfoDto = new ChatDataDto();
+
+        //create the chat entity
+        ChatEntity tempNewChat = new ChatEntity();
+        tempNewChat.setChat_name(postReqChatDto.getChatName());
+
+        //create the relation between chat and user entity
+        tempNewChat.setDefUserEntity(currentUser);
+        currentUser.addChatEntity(tempNewChat);
+
+        //save the new chat
+        ChatEntity newChatEntity = entityManager.merge(tempNewChat);
+
+        //map the dto and return the new data
+        chatInfoDto.setChat_id(newChatEntity.getChat_id());
+        chatInfoDto.setChat_name(newChatEntity.getChat_name());
+        chatInfoDto.setUser_id(currentUser.getId());
+
+        return chatInfoDto;
     }
 
+    //retrieve all the chats owned by the specific users
     @Override
     public List<ChatDataDto> retrieveChats(UserDataDTO userDataDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'retrieveChats'");
+        
+        //find the user based on the userDto
+        UserEntity currentUser = entityManager.find(UserEntity.class, userDataDTO.getId());
+        if(currentUser == null){
+            throw new NoResultException("no user found");
+        }
+
+        //query the db to return only chats that are owned by the specific user
+       
+        TypedQuery<ChatEntity> chatQuery = entityManager.createQuery(
+            "SELECT c FROM ChatEntity c WHERE c.defUserEntity.id = :userId", ChatEntity.class);
+        
+        chatQuery.setParameter("userId", userDataDTO.getId());
+
+        //retrieve the list of chats
+        List<ChatEntity> userChats;
+        try {
+            userChats = chatQuery.getResultList();
+        } catch (Exception e) {
+            throw new NoResultException("no chats has been found for this user");
+        }
+
+        //map the chatEntity to a list of dto
+        List<ChatDataDto> listUserChatsDto = new ArrayList<>();
+        for(ChatEntity chat : userChats){
+            ChatDataDto tempChatDataDto = new ChatDataDto();
+            tempChatDataDto.setChat_id(chat.getChat_id());
+            tempChatDataDto.setChat_name(chat.getChat_name());
+            tempChatDataDto.setUser_id(userDataDTO.getId());
+            listUserChatsDto.add(tempChatDataDto);
+        }
+
+        return listUserChatsDto;
+        
     }
 
+    //save the current generated quiz discussion 
     @Override
-    public DiscussionDataDto saveDiscussion(ChatDataDto chatDataDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'saveDiscussion'");
+    @Transactional
+    public DiscussionDataDto saveDiscussion(PostReqDiscussionDto postReqDiscussionDto) {
+        
+        //retrieve the chat where to save the discussion 
+        ChatEntity currentChat = entityManager.find(ChatEntity.class, postReqDiscussionDto.getChat_id());
+
+        if(currentChat == null){
+            throw new NoResultException("no chat found");
+        }
+
+        //create a new discussion
+        DiscussionEntity tempDiscussionEntity = new DiscussionEntity();
+
+        tempDiscussionEntity.setUser_pdf_name(postReqDiscussionDto.getUser_pdf_name());
+        tempDiscussionEntity.setQuiz_content(postReqDiscussionDto.getQuiz_content());
+
+        //create the relation between the cat and the discussion 
+        currentChat.addDiscussion(tempDiscussionEntity);
+        tempDiscussionEntity.setDefChatEntity(currentChat);
+
+        //save the new discussion 
+        DiscussionEntity currentDiscussion = entityManager.merge(tempDiscussionEntity);
+
+        //create the dto and return it
+        DiscussionDataDto currentDiscussionDataDto = new DiscussionDataDto();
+        currentDiscussionDataDto.setDiscussion_id(currentDiscussion.getDiscussion_id());
+        currentDiscussionDataDto.setUser_pdf_name(currentDiscussion.getUser_pdf_name());
+        currentDiscussionDataDto.setQuiz_content(currentDiscussion.getQuiz_content());
+        currentDiscussionDataDto.setChat_id(postReqDiscussionDto.getChat_id());
+
+        return currentDiscussionDataDto;
     }
 
+    //retrieve all the discussions of a chat
     @Override
-    public List<DiscussionDataDto> retrieveDiscussions(ChatDataDto chatDataDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'retrieveDiscussions'");
+    public List<DiscussionDataDto> retrieveDiscussions(PostReqDiscussionDto postReqDiscussionDto) {
+        
+        //retrieve the chat that holds the requested conversations
+        ChatEntity currentChat = entityManager.find(ChatEntity.class, postReqDiscussionDto.getChat_id());
+
+        if(currentChat == null){
+            throw new NoResultException("no chat found");
+        }
+
+        //retrieve all the discussions related to the chat
+        TypedQuery<DiscussionEntity> discussionQuery = entityManager.createQuery(
+            "SELECT d FROM DiscussionEntity d WHERE d.defChatEntity.chat_id = :currentChatId", DiscussionEntity.class);
+        
+        discussionQuery.setParameter("currentChatId", postReqDiscussionDto.getChat_id());
+
+        //query the db
+        List<DiscussionEntity> chatDiscussions;
+        try {
+            chatDiscussions = discussionQuery.getResultList();
+        } catch (Exception e) {
+            throw new NoResultException("no discussions found for that chat");
+        }
+
+        //create the discussionDto list
+        List<DiscussionDataDto> listChatDiscussionDto = new ArrayList<>();
+        for(DiscussionEntity discussion : chatDiscussions){
+            DiscussionDataDto discussionDataDto = new DiscussionDataDto();
+            discussionDataDto.setDiscussion_id(discussion.getDiscussion_id());
+            discussionDataDto.setUser_pdf_name(discussion.getUser_pdf_name());
+            discussionDataDto.setQuiz_content(discussion.getQuiz_content());
+            discussionDataDto.setChat_id(postReqDiscussionDto.getChat_id());
+        } 
+
+        return listChatDiscussionDto;
     }
 
     @Override

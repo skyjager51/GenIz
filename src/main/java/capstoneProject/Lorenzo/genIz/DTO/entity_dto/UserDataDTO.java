@@ -1,4 +1,4 @@
-package capstoneProject.Lorenzo.genIz.DTO;
+package capstoneProject.Lorenzo.genIz.DTO.entity_dto;
 
 public class UserDataDTO {
     private int id;
