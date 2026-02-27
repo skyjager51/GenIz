@@ -11,7 +11,7 @@ import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqChatDto;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqDiscussionDto;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqModelSetting;
 
-public interface DaoServiceInterface {
+public interface QuizDaoInterface {
 
     public UserDataDTO manageUser(OAuth2AuthenticationToken token);
 

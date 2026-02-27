@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import capstoneProject.Lorenzo.genIz.DTO.ResponseDataDto;
 import capstoneProject.Lorenzo.genIz.service.LocalModelApiFlowAggregator;
+import capstoneProject.Lorenzo.genIz.service.QuizDaoService;
 
 @RestController
 public class RESTController {
@@ -18,9 +19,11 @@ public class RESTController {
 
     //injecting the services utilities 
     LocalModelApiFlowAggregator localModelApiFlowAggregator;
+    QuizDaoService quizDaoService;
 
-    public RESTController(LocalModelApiFlowAggregator localModelApiFlowAggregator) {
+    public RESTController(LocalModelApiFlowAggregator localModelApiFlowAggregator, QuizDaoService quizDaoService) {
         this.localModelApiFlowAggregator = localModelApiFlowAggregator;
+        this.quizDaoService = quizDaoService;
     }
 
     @GetMapping("/")

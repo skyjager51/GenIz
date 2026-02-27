@@ -14,7 +14,7 @@ public class DiscussionEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="discussion_id")
-    private int discussion_id;
+    private Integer discussion_id;
 
     @Column(name="user_pdf_name")
     private String user_pdf_name;
@@ -28,11 +28,11 @@ public class DiscussionEntity {
     @JoinColumn(name="chat_id")
     private ChatEntity defChatEntity;
 
-    public int getDiscussion_id() {
+    public Integer getDiscussion_id() {
         return discussion_id;
     }
 
-    public void setDiscussion_id(int discussion_id) {
+    public void setDiscussion_id(Integer discussion_id) {
         this.discussion_id = discussion_id;
     }
 

@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS chats(
 CREATE TABLE IF NOT EXISTS discussions(
     discussion_id INT NOT NULL AUTO_INCREMENT,
     user_pdf_name VARCHAR(60),
-    quiz_content JSON NOT NULL,
+    quiz_content TEXT NOT NULL,
     chat_id INT NOT NULL,
     PRIMARY KEY (discussion_id),
     FOREIGN KEY (chat_id) REFERENCES chats (chat_id) ON DELETE CASCADE

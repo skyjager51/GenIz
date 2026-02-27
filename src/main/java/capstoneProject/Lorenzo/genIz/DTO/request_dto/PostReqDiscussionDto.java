@@ -1,14 +1,14 @@
 package capstoneProject.Lorenzo.genIz.DTO.request_dto;
 
 public class PostReqDiscussionDto {
-    private int chat_id;
+    private Integer chat_id;
     private String user_pdf_name;
     private String quiz_content;
     
-    public int getChat_id() {
+    public Integer getChat_id() {
         return chat_id;
     }
-    public void setChat_id(int chat_id) {
+    public void setChat_id(Integer chat_id) {
         this.chat_id = chat_id;
     }
     public String getUser_pdf_name() {

@@ -1,14 +1,14 @@
 package capstoneProject.Lorenzo.genIz.DTO.entity_dto;
 
 public class UserDataDTO {
-    private int id;
+    private Integer id;
     private String identity_provider_user_id;
     private Boolean use_local_model;
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getIdentity_provider_user_id() {

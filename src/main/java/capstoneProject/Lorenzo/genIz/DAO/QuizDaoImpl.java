@@ -21,12 +21,12 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 @Repository
-public class QuizDaoServiceImpl implements DaoServiceInterface{
+public class QuizDaoImpl implements QuizDaoInterface{
 
     //inject entity manager to interact with DB 
     EntityManager entityManager;
 
-    public QuizDaoServiceImpl(EntityManager entityManager) {
+    public QuizDaoImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

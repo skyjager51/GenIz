@@ -1,10 +1,9 @@
-package capstoneProject.Lorenzo.genIz.DTO.entity_dto;
+package capstoneProject.Lorenzo.genIz.DTO.response_dto;
 
-public class ChatDataDto {
+public class ResponseChatListDto {
     private Integer chat_id;
     private String chat_name;
-    private Integer user_id;
-    
+
     public Integer getChat_id() {
         return chat_id;
     }
@@ -17,12 +16,5 @@ public class ChatDataDto {
     public void setChat_name(String chat_name) {
         this.chat_name = chat_name;
     }
-    public Integer getUser_id() {
-        return user_id;
-    }
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
-
     
 }

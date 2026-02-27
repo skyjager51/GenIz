@@ -19,7 +19,7 @@ public class ChatEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="chat_id")
-    private int chat_id;
+    private Integer chat_id;
 
     @Column(name="chat_name")
     private String chat_name;
@@ -35,11 +35,11 @@ public class ChatEntity {
     @OneToMany(mappedBy="defChatEntity")
     private List<DiscussionEntity> discussionEntityList;
 
-    public int getChat_id() {
+    public Integer getChat_id() {
         return chat_id;
     }
 
-    public void setChat_id(int chat_id) {
+    public void setChat_id(Integer chat_id) {
         this.chat_id = chat_id;
     }
 
