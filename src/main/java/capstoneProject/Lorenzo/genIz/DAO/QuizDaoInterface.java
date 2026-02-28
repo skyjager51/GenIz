@@ -26,4 +26,10 @@ public interface QuizDaoInterface {
     public UserDataDTO manageModelSettings(UserDataDTO userDataDTO, PostReqModelSetting postReqModelSetting);
 
     public UserDataDTO retrieveModelSettings(UserDataDTO userDataDTO);
+
+    public void deleteChat(Integer chatId);
+
+    public ChatDataDto updateChat(PostReqChatDto postReqChatDto);
+
+    public void deleteDiscussion(Integer discussionId);
 }

@@ -1,5 +1,6 @@
 package capstoneProject.Lorenzo.genIz.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ public class DiscussionEntity {
 
     //each discussion belong to a single chat 
     //this is the owning side 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="chat_id")
     private ChatEntity defChatEntity;
 

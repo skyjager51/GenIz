@@ -23,4 +23,11 @@ public interface ImplementQuizDaoMethodsInterface {
     public ResponseModelSettingDto manageModelSettings(PostReqModelSetting postReqModelSetting);
 
     public ResponseModelSettingDto retrieveModelSettings();
+
+    public void deleteChat(Integer chatId);
+
+    public ResponseChatListDto updateChat(PostReqChatDto postReqChatDto);
+
+    public void deleteDiscussion(Integer discussionId);
+
 }

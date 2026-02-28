@@ -249,4 +249,46 @@ public class QuizDaoImpl implements QuizDaoInterface{
         return newUserDataDTO;
     }
 
+    //delete the specified chat
+    @Override
+    @Transactional
+    public void deleteChat(Integer chatId) {
+
+        //retrieve the chat object
+        ChatEntity currentChat = entityManager.find(ChatEntity.class, chatId);
+        
+        //delete the chat entity from the db
+        entityManager.remove(currentChat);
+    }
+
+    //update chatname 
+    @Override
+    @Transactional
+    public ChatDataDto updateChat(PostReqChatDto postReqChatDto) {
+        
+        //retrieve the current chat
+        ChatEntity currentChat = entityManager.find(ChatEntity.class, postReqChatDto.getChat_id());
+
+        //set the new value of chatName and let Jpa identify the change and apply it
+        currentChat.setChat_name(postReqChatDto.getChatName());
+
+        //return the new chat dto
+        ChatDataDto updatedChat = new ChatDataDto();
+        updatedChat.setChat_id(currentChat.getChat_id());
+        updatedChat.setChat_name(currentChat.getChat_name());
+
+        return updatedChat;
+    }
+
+    //delete the specified discussion
+    @Override
+    public void deleteDiscussion(Integer discussionId) {
+        
+        //retrieve the current discussion 
+        DiscussionEntity currentDiscussion = entityManager.find(DiscussionEntity.class, discussionId);
+
+        //delete the discussion 
+        entityManager.remove(currentDiscussion);
+    }
+
 }
