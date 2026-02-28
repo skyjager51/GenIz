@@ -18,9 +18,16 @@ public interface ImplementQuizDaoMethodsInterface {
 
     public ResponseDiscussionListDto saveDiscussion(PostReqDiscussionDto postReqDiscussionDto);
 
-    public List<ResponseDiscussionListDto> retrieveDiscussions(PostReqDiscussionDto postReqDiscussionDto);
+    public List<ResponseDiscussionListDto> retrieveDiscussions(Integer chatId);
 
     public ResponseModelSettingDto manageModelSettings(PostReqModelSetting postReqModelSetting);
 
     public ResponseModelSettingDto retrieveModelSettings();
+
+    public void deleteChat(Integer chatId);
+
+    public ResponseChatListDto updateChat(PostReqChatDto postReqChatDto);
+
+    public void deleteDiscussion(Integer discussionId);
+
 }

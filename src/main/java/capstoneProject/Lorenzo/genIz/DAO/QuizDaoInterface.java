@@ -21,9 +21,15 @@ public interface QuizDaoInterface {
 
     public DiscussionDataDto saveDiscussion(PostReqDiscussionDto postReqDiscussionDto);
 
-    public List<DiscussionDataDto> retrieveDiscussions(PostReqDiscussionDto postReqDiscussionDto);
+    public List<DiscussionDataDto> retrieveDiscussions(Integer chatId);
 
     public UserDataDTO manageModelSettings(UserDataDTO userDataDTO, PostReqModelSetting postReqModelSetting);
 
     public UserDataDTO retrieveModelSettings(UserDataDTO userDataDTO);
+
+    public void deleteChat(Integer chatId);
+
+    public ChatDataDto updateChat(PostReqChatDto postReqChatDto);
+
+    public void deleteDiscussion(Integer discussionId);
 }

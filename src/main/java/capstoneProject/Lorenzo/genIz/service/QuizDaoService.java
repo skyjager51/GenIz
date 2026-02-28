@@ -97,14 +97,14 @@ public class QuizDaoService implements ImplementQuizDaoMethodsInterface{
     }
 
     @Override
-    public List<ResponseDiscussionListDto> retrieveDiscussions(PostReqDiscussionDto postReqDiscussionDto) {
+    public List<ResponseDiscussionListDto> retrieveDiscussions(Integer chatId) {
         
         //check if the chat id is defined, if not stop execution
-        if(postReqDiscussionDto.getChat_id() == null){
+        if(chatId == null){
             throw new IllegalArgumentException("chat id must be defined");
         }
 
-        List<DiscussionDataDto> currentDiscussions = quizDaoImpl.retrieveDiscussions(postReqDiscussionDto);
+        List<DiscussionDataDto> currentDiscussions = quizDaoImpl.retrieveDiscussions(chatId);
 
         //map the returned list of discussion dtos into a list of response dto
         List<ResponseDiscussionListDto> responseDiscussionsDto = new ArrayList<>();
@@ -154,6 +154,48 @@ public class QuizDaoService implements ImplementQuizDaoMethodsInterface{
         responseModelSettingDto.setUse_local_model(newCurrentUser.getUse_local_model());
 
         return responseModelSettingDto;
+    }
+
+    @Override
+    public void deleteChat(Integer chatId) {
+        
+        //check if chatId id defined, if not stop execution
+        if(chatId == null){
+            throw new IllegalArgumentException("chat id must be defined");
+        }
+
+        //call the delete method
+        quizDaoImpl.deleteChat(chatId);
+    }
+
+    @Override
+    public ResponseChatListDto updateChat(PostReqChatDto postReqChatDto) {
+        
+        //check if the chat id and chat name are defined 
+        if(postReqChatDto.getChat_id()==null){throw new IllegalArgumentException("chat id must be defined");}
+        if(postReqChatDto.getChatName()==null){throw new IllegalArgumentException("chat name must be defined");}
+
+        //update the chat by using the dao method
+        ChatDataDto updatedChat = quizDaoImpl.updateChat(postReqChatDto);
+
+        //map the updated chat to the resposne dto
+        ResponseChatListDto responseChatDto = new ResponseChatListDto();
+        responseChatDto.setChat_id(updatedChat.getChat_id());
+        responseChatDto.setChat_name(updatedChat.getChat_name());
+
+        return responseChatDto;
+    }
+
+    @Override
+    public void deleteDiscussion(Integer discussionId) {
+        
+        //check if discussion id is defined, if not stop execution
+        if(discussionId == null){
+            throw new IllegalArgumentException("discussion id must be defined");
+        }
+
+        //call the delete method
+        quizDaoImpl.deleteDiscussion(discussionId);
     }
 
 }

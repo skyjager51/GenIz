@@ -176,10 +176,10 @@ public class QuizDaoImpl implements QuizDaoInterface{
 
     //retrieve all the discussions of a chat
     @Override
-    public List<DiscussionDataDto> retrieveDiscussions(PostReqDiscussionDto postReqDiscussionDto) {
+    public List<DiscussionDataDto> retrieveDiscussions(Integer chatId) {
         
         //retrieve the chat that holds the requested conversations
-        ChatEntity currentChat = entityManager.find(ChatEntity.class, postReqDiscussionDto.getChat_id());
+        ChatEntity currentChat = entityManager.find(ChatEntity.class, chatId);
 
         if(currentChat == null){
             throw new NoResultException("no chat found");
@@ -189,7 +189,7 @@ public class QuizDaoImpl implements QuizDaoInterface{
         TypedQuery<DiscussionEntity> discussionQuery = entityManager.createQuery(
             "SELECT d FROM DiscussionEntity d WHERE d.defChatEntity.chat_id = :currentChatId", DiscussionEntity.class);
         
-        discussionQuery.setParameter("currentChatId", postReqDiscussionDto.getChat_id());
+        discussionQuery.setParameter("currentChatId", chatId);
 
         //query the db
         List<DiscussionEntity> chatDiscussions = discussionQuery.getResultList();
@@ -201,7 +201,7 @@ public class QuizDaoImpl implements QuizDaoInterface{
             discussionDataDto.setDiscussion_id(discussion.getDiscussion_id());
             discussionDataDto.setUser_pdf_name(discussion.getUser_pdf_name());
             discussionDataDto.setQuiz_content(discussion.getQuiz_content());
-            discussionDataDto.setChat_id(postReqDiscussionDto.getChat_id());
+            discussionDataDto.setChat_id(chatId);
 
             listChatDiscussionDto.add(discussionDataDto);
         } 
@@ -247,6 +247,48 @@ public class QuizDaoImpl implements QuizDaoInterface{
         newUserDataDTO.setUse_local_model(currentUser.getUse_local_model());
 
         return newUserDataDTO;
+    }
+
+    //delete the specified chat
+    @Override
+    @Transactional
+    public void deleteChat(Integer chatId) {
+
+        //retrieve the chat object
+        ChatEntity currentChat = entityManager.find(ChatEntity.class, chatId);
+        
+        //delete the chat entity from the db
+        entityManager.remove(currentChat);
+    }
+
+    //update chatname 
+    @Override
+    @Transactional
+    public ChatDataDto updateChat(PostReqChatDto postReqChatDto) {
+        
+        //retrieve the current chat
+        ChatEntity currentChat = entityManager.find(ChatEntity.class, postReqChatDto.getChat_id());
+
+        //set the new value of chatName and let Jpa identify the change and apply it
+        currentChat.setChat_name(postReqChatDto.getChatName());
+
+        //return the new chat dto
+        ChatDataDto updatedChat = new ChatDataDto();
+        updatedChat.setChat_id(currentChat.getChat_id());
+        updatedChat.setChat_name(currentChat.getChat_name());
+
+        return updatedChat;
+    }
+
+    //delete the specified discussion
+    @Override
+    public void deleteDiscussion(Integer discussionId) {
+        
+        //retrieve the current discussion 
+        DiscussionEntity currentDiscussion = entityManager.find(DiscussionEntity.class, discussionId);
+
+        //delete the discussion 
+        entityManager.remove(currentDiscussion);
     }
 
 }

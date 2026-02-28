@@ -12,8 +12,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="chats")
 public class ChatEntity {
 
     @Id
@@ -26,13 +28,13 @@ public class ChatEntity {
 
     //each chat has only one owner (user)
     //this is the owning side
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
     private UserEntity defUserEntity;
 
     //list of all the discussions for the spefic chat
     //this is the owned side 
-    @OneToMany(mappedBy="defChatEntity")
+    @OneToMany(mappedBy="defChatEntity", cascade=CascadeType.ALL)
     private List<DiscussionEntity> discussionEntityList;
 
     public Integer getChat_id() {

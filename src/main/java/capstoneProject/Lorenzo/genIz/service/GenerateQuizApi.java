@@ -60,7 +60,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
                 .build();
 
         } catch (URISyntaxException e) {
-            throw new RuntimeException("something went wrong", e);
+            throw new RuntimeException("something went wrong with the model url", e);
         } 
 
         return httpRequest;
@@ -80,7 +80,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
              convertResponse.getUsage().getTotal_tokens());
 
         } catch (IOException | InterruptedException e){
-            throw new RuntimeException("something went wrong", e);
+            throw new RuntimeException("something went wrong with the llm model", e);
         }
     }    
 
