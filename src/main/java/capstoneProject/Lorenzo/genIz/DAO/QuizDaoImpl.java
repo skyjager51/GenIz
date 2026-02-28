@@ -176,10 +176,10 @@ public class QuizDaoImpl implements QuizDaoInterface{
 
     //retrieve all the discussions of a chat
     @Override
-    public List<DiscussionDataDto> retrieveDiscussions(PostReqDiscussionDto postReqDiscussionDto) {
+    public List<DiscussionDataDto> retrieveDiscussions(Integer chatId) {
         
         //retrieve the chat that holds the requested conversations
-        ChatEntity currentChat = entityManager.find(ChatEntity.class, postReqDiscussionDto.getChat_id());
+        ChatEntity currentChat = entityManager.find(ChatEntity.class, chatId);
 
         if(currentChat == null){
             throw new NoResultException("no chat found");
@@ -189,7 +189,7 @@ public class QuizDaoImpl implements QuizDaoInterface{
         TypedQuery<DiscussionEntity> discussionQuery = entityManager.createQuery(
             "SELECT d FROM DiscussionEntity d WHERE d.defChatEntity.chat_id = :currentChatId", DiscussionEntity.class);
         
-        discussionQuery.setParameter("currentChatId", postReqDiscussionDto.getChat_id());
+        discussionQuery.setParameter("currentChatId", chatId);
 
         //query the db
         List<DiscussionEntity> chatDiscussions = discussionQuery.getResultList();
@@ -201,7 +201,7 @@ public class QuizDaoImpl implements QuizDaoInterface{
             discussionDataDto.setDiscussion_id(discussion.getDiscussion_id());
             discussionDataDto.setUser_pdf_name(discussion.getUser_pdf_name());
             discussionDataDto.setQuiz_content(discussion.getQuiz_content());
-            discussionDataDto.setChat_id(postReqDiscussionDto.getChat_id());
+            discussionDataDto.setChat_id(chatId);
 
             listChatDiscussionDto.add(discussionDataDto);
         } 

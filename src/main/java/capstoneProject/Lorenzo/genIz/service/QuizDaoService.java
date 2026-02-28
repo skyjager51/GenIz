@@ -97,14 +97,14 @@ public class QuizDaoService implements ImplementQuizDaoMethodsInterface{
     }
 
     @Override
-    public List<ResponseDiscussionListDto> retrieveDiscussions(PostReqDiscussionDto postReqDiscussionDto) {
+    public List<ResponseDiscussionListDto> retrieveDiscussions(Integer chatId) {
         
         //check if the chat id is defined, if not stop execution
-        if(postReqDiscussionDto.getChat_id() == null){
+        if(chatId == null){
             throw new IllegalArgumentException("chat id must be defined");
         }
 
-        List<DiscussionDataDto> currentDiscussions = quizDaoImpl.retrieveDiscussions(postReqDiscussionDto);
+        List<DiscussionDataDto> currentDiscussions = quizDaoImpl.retrieveDiscussions(chatId);
 
         //map the returned list of discussion dtos into a list of response dto
         List<ResponseDiscussionListDto> responseDiscussionsDto = new ArrayList<>();
