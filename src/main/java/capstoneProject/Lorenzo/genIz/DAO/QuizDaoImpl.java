@@ -92,7 +92,7 @@ public class QuizDaoImpl implements QuizDaoInterface{
 
         //create the relation between chat and user entity
         tempNewChat.setDefUserEntity(currentUser);
-        currentUser.addChatEntity(tempNewChat);
+        // currentUser.addChatEntity(tempNewChat);
 
         //save the new chat
         ChatEntity newChatEntity = entityManager.merge(tempNewChat);
@@ -158,7 +158,7 @@ public class QuizDaoImpl implements QuizDaoInterface{
         tempDiscussionEntity.setQuiz_content(postReqDiscussionDto.getQuiz_content());
 
         //create the relation between the cat and the discussion 
-        currentChat.addDiscussion(tempDiscussionEntity);
+        // currentChat.addDiscussion(tempDiscussionEntity);
         tempDiscussionEntity.setDefChatEntity(currentChat);
 
         //save the new discussion 
@@ -282,6 +282,7 @@ public class QuizDaoImpl implements QuizDaoInterface{
 
     //delete the specified discussion
     @Override
+    @Transactional
     public void deleteDiscussion(Integer discussionId) {
         
         //retrieve the current discussion 
