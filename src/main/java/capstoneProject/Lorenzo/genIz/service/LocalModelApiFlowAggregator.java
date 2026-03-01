@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.JsonObject;
 
 import capstoneProject.Lorenzo.genIz.DTO.ResponseDataDto;
+import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqUserTextDto;
 import capstoneProject.Lorenzo.genIz.api_format.request.request_parameters.QuizGenParameter;
 
 @Service
@@ -22,10 +23,10 @@ public class LocalModelApiFlowAggregator implements ApiFlowAggregatorInterface{
     }
 
     @Override
-    public ResponseDataDto performApiCall(String userData) {
+    public ResponseDataDto performApiCall(PostReqUserTextDto postReqUserTextDto) {
         
         //creating the api body
-        String apiBody = generateQuizApi.createApiBody(QuizGenParameter.getSystemprompt(), userData);
+        String apiBody = generateQuizApi.createApiBody(QuizGenParameter.getSystemprompt(), postReqUserTextDto.getUserText());
 
         //creating the api request
         HttpRequest apiRequest = generateQuizApi.apiCallRequest(apiBody);
