@@ -28,7 +28,7 @@ public class ChatEntity {
 
     //each chat has only one owner (user)
     //this is the owning side
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="user_id")
     private UserEntity defUserEntity;
 
