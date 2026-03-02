@@ -26,6 +26,9 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
     @Value("${MODEL_URL}")
     private String modelUrl;
 
+    @Value("${MODEL_API_KEY}")
+    private String modelApiKey;
+
     //initializing the HTTP client
     HttpClient httpClient = HttpClient.newHttpClient();
 
@@ -37,31 +40,56 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
     @Override
     public String createApiBody(String systemPrompt, String userText) {
 
-        //creating the class 
+        //creating the api body 
         ApiCallRequest apiCallRequest = new ApiCallRequest();
         apiCallRequest.setModel(modelName);
         apiCallRequest.addField("system", systemPrompt);
         apiCallRequest.addField("user", userText);
 
         //map the class to it's json string 
-        return gson.toJson(apiCallRequest);
+        String json = gson.toJson(apiCallRequest);
+
+        return json;
     }
 
     //creating the HTTP request to query the model
     @Override
-    public HttpRequest apiCallRequest(String requestBody){
+    public HttpRequest apiCallRequest(String requestBody, Boolean useLocalModel){
+
+        //if useLocal model is not set, use local model
+        if(useLocalModel == null){
+            useLocalModel = true;
+        }
+
         //initializing the request
         HttpRequest httpRequest = null;
-        try {
-            httpRequest = HttpRequest.newBuilder()
-                .uri(new URI(modelUrl))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
 
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("something went wrong with the model url", e);
-        } 
+        //if user set useLocalModel to false, use the specified model provier to create the request, else use local model
+        if(!useLocalModel){
+            try {
+                httpRequest = HttpRequest.newBuilder()
+                    .uri(new URI(modelUrl))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + modelApiKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+    
+            } catch (URISyntaxException e) {
+                throw new RuntimeException("something went wrong with the model url", e);
+            } 
+
+        } else {
+            try {
+                httpRequest = HttpRequest.newBuilder()
+                    .uri(new URI(modelUrl))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+    
+            } catch (URISyntaxException e) {
+                throw new RuntimeException("something went wrong with the model url", e);
+            } 
+        }
 
         return httpRequest;
     }
@@ -76,6 +104,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
 
             //converting the response to a DTO object
             ApiCallResponse convertResponse = gson.fromJson(rawResponse.body(), ApiCallResponse.class);
+
             return new ResponseDataDto(convertResponse.getChoices().get(0).getMessage().getContent(), 
              convertResponse.getUsage().getTotal_tokens());
 
