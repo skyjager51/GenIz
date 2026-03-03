@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import capstoneProject.Lorenzo.genIz.DTO.ResponseDataDto;
 import capstoneProject.Lorenzo.genIz.api_format.request.ApiCallRequest;
@@ -108,8 +109,8 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
             return new ResponseDataDto(convertResponse.getChoices().get(0).getMessage().getContent(), 
              convertResponse.getUsage().getTotal_tokens());
 
-        } catch (IOException | InterruptedException e){
-            throw new RuntimeException("something went wrong with the llm model", e);
+        } catch (IOException | InterruptedException | JsonSyntaxException e){
+            throw new RuntimeException("something went wrong when calling the llm model or with the model response format", e);
         }
     }    
 
