@@ -26,7 +26,7 @@ public class LocalModelApiFlowAggregator implements ApiFlowAggregatorInterface{
     public ResponseDataDto performApiCall(PostReqUserTextDto postReqUserTextDto) {
         
         //creating the api body
-        String apiBody = generateQuizApi.createApiBody(QuizGenParameter.getSystemprompt(), postReqUserTextDto.getUserText());
+        String apiBody = generateQuizApi.createApiBody(QuizGenParameter.getSystemprompt(), postReqUserTextDto.getUserText(), postReqUserTextDto.getUseLocalModel());
 
         //creating the api request
         HttpRequest apiRequest = generateQuizApi.apiCallRequest(apiBody, postReqUserTextDto.getUseLocalModel());

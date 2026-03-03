@@ -27,8 +27,14 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
     @Value("${MODEL_URL}")
     private String modelUrl;
 
-    @Value("${MODEL_API_KEY}")
+    @Value("${EXTERNAL_MODEL_API_KEY}")
     private String modelApiKey;
+
+    @Value("${EXTERNAL_MODEL_NAME}")
+    private String extModelName;
+
+    @Value("${EXTERNAL_MODEL_URL}")
+    private String extModelUrl;
 
     //initializing the HTTP client
     HttpClient httpClient = HttpClient.newHttpClient();
@@ -39,11 +45,15 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
 
     //creating the API request json body 
     @Override
-    public String createApiBody(String systemPrompt, String userText) {
+    public String createApiBody(String systemPrompt, String userText, Boolean useLocalModel) {
 
         //creating the api body 
         ApiCallRequest apiCallRequest = new ApiCallRequest();
-        apiCallRequest.setModel(modelName);
+        if(!useLocalModel){
+            apiCallRequest.setModel(extModelName);
+        } else {
+            apiCallRequest.setModel(modelName);
+        }
         apiCallRequest.addField("system", systemPrompt);
         apiCallRequest.addField("user", userText);
 
@@ -69,7 +79,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
         if(!useLocalModel){
             try {
                 httpRequest = HttpRequest.newBuilder()
-                    .uri(new URI(modelUrl))
+                    .uri(new URI(extModelUrl))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + modelApiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
