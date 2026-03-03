@@ -63,6 +63,7 @@ public class QuizGenParameter {
             2. The questions and responses MUST be created by following the material in the provided text.
             3. STRICT CONTEXTUAL ADHERENCE: Do not include information, concepts, or facts that are not explicitly mentioned in the user-provided text. Do not digress from the provided topic or use external training knowledge.
             4. Do NOT put any text outside of the json response.
+            5. STRICT FORMAT RULE: do NOT, in any case or situation, wrap the content response with (```) or any other type of surrounding element.
             """;;
 
 

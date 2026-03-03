@@ -6,9 +6,9 @@ import capstoneProject.Lorenzo.genIz.DTO.ResponseDataDto;
 
 public interface GenerateQuizApiInterface {
 
-    public String createApiBody(String systemPrompt, String userText);
+    public String createApiBody(String systemPrompt, String userText, Boolean useLocalModel);
 
-    public HttpRequest apiCallRequest(String requestBody);
+    public HttpRequest apiCallRequest(String requestBody, Boolean useLocalModel);
 
     public ResponseDataDto getApiResponse(HttpRequest apiRequest);
 }

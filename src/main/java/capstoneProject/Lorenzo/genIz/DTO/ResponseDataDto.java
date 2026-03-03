@@ -2,9 +2,9 @@ package capstoneProject.Lorenzo.genIz.DTO;
 
 public class ResponseDataDto {
     private String llmOutput;
-    private String tokenCount;
+    private Integer tokenCount;
     
-    public ResponseDataDto(String llmOutput, String tokenCount) {
+    public ResponseDataDto(String llmOutput, Integer tokenCount) {
         this.llmOutput = llmOutput;
         this.tokenCount = tokenCount;
     }
@@ -17,11 +17,11 @@ public class ResponseDataDto {
         this.llmOutput = llmOutput;
     }
 
-    public String getTokenCount() {
+    public Integer getTokenCount() {
         return tokenCount;
     }
 
-    public void setTokenCount(String tokenCount) {
+    public void setTokenCount(Integer tokenCount) {
         this.tokenCount = tokenCount;
     }
 
