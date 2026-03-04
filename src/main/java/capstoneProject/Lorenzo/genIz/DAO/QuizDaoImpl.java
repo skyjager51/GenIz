@@ -3,6 +3,8 @@ package capstoneProject.Lorenzo.genIz.DAO;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Repository;
 
@@ -151,27 +153,38 @@ public class QuizDaoImpl implements QuizDaoInterface{
             throw new NoResultException("no chat found");
         }
 
-        //create a new discussion
-        DiscussionEntity tempDiscussionEntity = new DiscussionEntity();
+        //retrieve the current user unique identifier from spring security 
+        String sub = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        tempDiscussionEntity.setUser_pdf_name(postReqDiscussionDto.getUser_pdf_name());
-        tempDiscussionEntity.setQuiz_content(postReqDiscussionDto.getQuiz_content());
+        //compare the retrieved user with the current one, to block requests from other authenticated users
+        if(currentChat.getDefUserEntity().getIdentity_provider_user_id().equals(sub)){
 
-        //create the relation between the cat and the discussion 
-        // currentChat.addDiscussion(tempDiscussionEntity);
-        tempDiscussionEntity.setDefChatEntity(currentChat);
+            //create a new discussion
+            DiscussionEntity tempDiscussionEntity = new DiscussionEntity();
+    
+            tempDiscussionEntity.setUser_pdf_name(postReqDiscussionDto.getUser_pdf_name());
+            tempDiscussionEntity.setQuiz_content(postReqDiscussionDto.getQuiz_content());
+    
+            //create the relation between the cat and the discussion 
+            // currentChat.addDiscussion(tempDiscussionEntity);
+            tempDiscussionEntity.setDefChatEntity(currentChat);
+    
+            //save the new discussion 
+            DiscussionEntity currentDiscussion = entityManager.merge(tempDiscussionEntity);
+    
+            //create the dto and return it
+            DiscussionDataDto currentDiscussionDataDto = new DiscussionDataDto();
+            currentDiscussionDataDto.setDiscussion_id(currentDiscussion.getDiscussion_id());
+            currentDiscussionDataDto.setUser_pdf_name(currentDiscussion.getUser_pdf_name());
+            currentDiscussionDataDto.setQuiz_content(currentDiscussion.getQuiz_content());
+            currentDiscussionDataDto.setChat_id(postReqDiscussionDto.getChat_id());
+    
+            return currentDiscussionDataDto;
 
-        //save the new discussion 
-        DiscussionEntity currentDiscussion = entityManager.merge(tempDiscussionEntity);
+        } else {
+            throw new AccessDeniedException("user not authorized to access this chat");
+        }
 
-        //create the dto and return it
-        DiscussionDataDto currentDiscussionDataDto = new DiscussionDataDto();
-        currentDiscussionDataDto.setDiscussion_id(currentDiscussion.getDiscussion_id());
-        currentDiscussionDataDto.setUser_pdf_name(currentDiscussion.getUser_pdf_name());
-        currentDiscussionDataDto.setQuiz_content(currentDiscussion.getQuiz_content());
-        currentDiscussionDataDto.setChat_id(postReqDiscussionDto.getChat_id());
-
-        return currentDiscussionDataDto;
     }
 
     //retrieve all the discussions of a chat
@@ -185,28 +198,39 @@ public class QuizDaoImpl implements QuizDaoInterface{
             throw new NoResultException("no chat found");
         }
 
-        //retrieve all the discussions related to the chat
-        TypedQuery<DiscussionEntity> discussionQuery = entityManager.createQuery(
-            "SELECT d FROM DiscussionEntity d WHERE d.defChatEntity.chat_id = :currentChatId", DiscussionEntity.class);
-        
-        discussionQuery.setParameter("currentChatId", chatId);
+        //retrieve the current user unique identifier from spring security 
+        String sub = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        //query the db
-        List<DiscussionEntity> chatDiscussions = discussionQuery.getResultList();
-        
-        //create the discussionDto list
-        List<DiscussionDataDto> listChatDiscussionDto = new ArrayList<>();
-        for(DiscussionEntity discussion : chatDiscussions){
-            DiscussionDataDto discussionDataDto = new DiscussionDataDto();
-            discussionDataDto.setDiscussion_id(discussion.getDiscussion_id());
-            discussionDataDto.setUser_pdf_name(discussion.getUser_pdf_name());
-            discussionDataDto.setQuiz_content(discussion.getQuiz_content());
-            discussionDataDto.setChat_id(chatId);
+        //compare the retrieved user with the current one, to block requests from other authenticated users
+        if(currentChat.getDefUserEntity().getIdentity_provider_user_id().equals(sub)){
 
-            listChatDiscussionDto.add(discussionDataDto);
-        } 
+            //retrieve all the discussions related to the chat
+            TypedQuery<DiscussionEntity> discussionQuery = entityManager.createQuery(
+                "SELECT d FROM DiscussionEntity d WHERE d.defChatEntity.chat_id = :currentChatId", DiscussionEntity.class);
+            
+            discussionQuery.setParameter("currentChatId", chatId);
+    
+            //query the db
+            List<DiscussionEntity> chatDiscussions = discussionQuery.getResultList();
+            
+            //create the discussionDto list
+            List<DiscussionDataDto> listChatDiscussionDto = new ArrayList<>();
+            for(DiscussionEntity discussion : chatDiscussions){
+                DiscussionDataDto discussionDataDto = new DiscussionDataDto();
+                discussionDataDto.setDiscussion_id(discussion.getDiscussion_id());
+                discussionDataDto.setUser_pdf_name(discussion.getUser_pdf_name());
+                discussionDataDto.setQuiz_content(discussion.getQuiz_content());
+                discussionDataDto.setChat_id(chatId);
+    
+                listChatDiscussionDto.add(discussionDataDto);
+            } 
+    
+            return listChatDiscussionDto;
 
-        return listChatDiscussionDto;
+        } else {
+            throw new AccessDeniedException("user not authorized to access this chat");
+        }
+
     }
 
     //toggle the switch to tell the application to use the local model or the specified Internet one
@@ -256,9 +280,20 @@ public class QuizDaoImpl implements QuizDaoInterface{
 
         //retrieve the chat object
         ChatEntity currentChat = entityManager.find(ChatEntity.class, chatId);
-        
-        //delete the chat entity from the db
-        entityManager.remove(currentChat);
+
+        //retrieve the current user unique identifier from spring security 
+        String sub = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        //compare the retrieved user with the current one, to block requests from other authenticated users
+        if(currentChat.getDefUserEntity().getIdentity_provider_user_id().equals(sub)){
+
+            //delete the chat entity from the db
+            entityManager.remove(currentChat);
+
+        } else {
+            throw new AccessDeniedException("user not authorized to access this chat");
+        }
+
     }
 
     //update chatname 
@@ -269,27 +304,49 @@ public class QuizDaoImpl implements QuizDaoInterface{
         //retrieve the current chat
         ChatEntity currentChat = entityManager.find(ChatEntity.class, postReqChatDto.getChat_id());
 
-        //set the new value of chatName and let Jpa identify the change and apply it
-        currentChat.setChat_name(postReqChatDto.getChatName());
+        //retrieve the current user unique identifier from spring security 
+        String sub = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        //return the new chat dto
-        ChatDataDto updatedChat = new ChatDataDto();
-        updatedChat.setChat_id(currentChat.getChat_id());
-        updatedChat.setChat_name(currentChat.getChat_name());
+        //compare the retrieved user with the current one, to block requests from other authenticated users
+        if(currentChat.getDefUserEntity().getIdentity_provider_user_id().equals(sub)){
 
-        return updatedChat;
+            //set the new value of chatName and let Jpa identify the change and apply it
+            currentChat.setChat_name(postReqChatDto.getChatName());
+    
+            //return the new chat dto
+            ChatDataDto updatedChat = new ChatDataDto();
+            updatedChat.setChat_id(currentChat.getChat_id());
+            updatedChat.setChat_name(currentChat.getChat_name());
+    
+            return updatedChat;
+
+        } else {
+            throw new AccessDeniedException("user not authorized to access this chat");
+        }
+
     }
 
     //delete the specified discussion
     @Override
     @Transactional
     public void deleteDiscussion(Integer discussionId) {
-        
-        //retrieve the current discussion 
+
+        //retrieve current discussion 
         DiscussionEntity currentDiscussion = entityManager.find(DiscussionEntity.class, discussionId);
 
-        //delete the discussion 
-        entityManager.remove(currentDiscussion);
+        //retrieve the current user unique identifier from spring security 
+        String sub = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        //compare the retrieved user with the current one, to block requests from other authenticated users
+        if(currentDiscussion.getDefChatEntity().getDefUserEntity().getIdentity_provider_user_id().equals(sub)){
+    
+            //delete the discussion 
+            entityManager.remove(currentDiscussion);
+
+        } else {
+            throw new AccessDeniedException("user not authorized to access this discussion");
+        }
+        
     }
 
 }
