@@ -2,6 +2,9 @@ package capstoneProject.Lorenzo.genIz.service;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +52,8 @@ public class ExportTxtFile implements ExportQuizToLocalMachine{
                 quizBuilder.append("B: ").append(options.get("B")).append(System.lineSeparator());
                 quizBuilder.append("C: ").append(options.get("C")).append(System.lineSeparator());
                 quizBuilder.append("D: ").append(options.get("D")).append(System.lineSeparator());
-                quizBuilder.append(quizElements.get("correct_answer")).append(System.lineSeparator());
-                quizBuilder.append(quizElements.get("explanation")).append(System.lineSeparator());
+                quizBuilder.append("Correct answer: ").append(quizElements.get("correct_answer")).append(System.lineSeparator());
+                quizBuilder.append("Explanation: ").append(quizElements.get("explanation")).append(System.lineSeparator());
                 quizBuilder.append(System.lineSeparator());
                 quizBuilder.append(System.lineSeparator());
 
@@ -62,13 +65,14 @@ public class ExportTxtFile implements ExportQuizToLocalMachine{
     }
 
     @Override
-    public void saveFile(List<String> fileContent) {
+    public void saveFile(List<String> fileContent){
 
-        String path = "";
-        String fileName = "";
+        String fileName = LocalDateTime.now().toString().replace(":", "-") + ".txt";
+
+        Path path = Paths.get("/exported_quizzes").resolve(fileName);
         
         //take each formatted quiz (if more than 1) and append it at the end of the file 
-        try (FileWriter writer = new FileWriter("/Users/lorenzofaccio/desktop/try.txt", true)){
+        try (FileWriter writer = new FileWriter(path.toFile(), true)){
             for (String quiz : fileContent){
                 writer.write(quiz);
             }
