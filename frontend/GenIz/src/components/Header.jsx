@@ -1,13 +1,25 @@
 import React from "react";
 import {Routes, Route, Link} from "react-router-dom";
+import geniz_logo from "../assets/geniz_logo.png";
 
 function Header(){
     return(
-        <div>
-            <div className="header">
-                <ul>
+        <div className="header">
+            <div className="header-content">
+                <div className="logo-container">
+                    <Link to={'/Home'}> <img src={geniz_logo} alt="geniz logo" className="logo-image"/> </Link>
+                    <p>GenIz</p>
+                </div>
+
+                <div className="user-info">
+                    <img src="" alt="user image"  className="user-image"/>
+                    <p className="username">Hello, username!</p>
+                </div>
+
+                <ul className="routes">
                     <Link to={'/Home'}> <li>Home</li> </Link>
                     <Link to={'/Guide'}> <li>Guide</li> </Link>
+                    <Link to={'/Privacy-Policy'}> <li>Privacy</li></Link>
                 </ul>
             </div>
         </div>

@@ -2,6 +2,7 @@ import React from 'react'
 import {Routes, Route, Link} from "react-router-dom";
 import Home from './Home';
 import ModelGuide from './ModelGuide';
+import PrivacyPolicy from './PrivacyPolicy';
 import Header from './Header';
 import '../style/App.css'
 
@@ -14,6 +15,7 @@ function App(){
 				<Route path='/' element={<Home></Home>}></Route>
 				<Route path='/Home' element={<Home></Home>}></Route>
 				<Route path='/Guide' element={<ModelGuide></ModelGuide>}></Route>
+				<Route path='/Privacy-Policy' element={<PrivacyPolicy></PrivacyPolicy>}></Route>
 			</Routes>
 		</div>
     );

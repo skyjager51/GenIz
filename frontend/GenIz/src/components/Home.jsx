@@ -1,9 +1,10 @@
 import React from "react";
+import ChatControl from "./ChatControl";
 
 function Home(){
     return(
         <div>
-            <h1>HomePage</h1>
+            <ChatControl></ChatControl>
         </div>
     );
 }
