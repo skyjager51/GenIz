@@ -8,7 +8,7 @@ function Header(){
             <div className="header-content">
                 <div className="logo-container">
                     <Link to={'/Home'}> <img src={geniz_logo} alt="geniz logo" className="logo-image"/> </Link>
-                    <p>GenIz</p>
+                    <p className="app-name">Gen<span id="span">Iz</span></p>
                 </div>
 
                 <div className="user-info">
@@ -16,11 +16,13 @@ function Header(){
                     <p className="username">Hello, username!</p>
                 </div>
 
-                <ul className="routes">
-                    <Link to={'/Home'}> <li>Home</li> </Link>
-                    <Link to={'/Guide'}> <li>Guide</li> </Link>
-                    <Link to={'/Privacy-Policy'}> <li>Privacy</li></Link>
-                </ul>
+                <div className="route-container">
+                    <ul className="routes">
+                        <Link to={'/Home'}> <li>Home</li> </Link>
+                        <Link to={'/Guide'}> <li>Guide</li> </Link>
+                        <Link to={'/Privacy-Policy'}> <li>Privacy</li></Link>
+                    </ul>
+                </div>
             </div>
         </div>
     );
