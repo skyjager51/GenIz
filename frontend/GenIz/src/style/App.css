@@ -32,6 +32,10 @@ li{
 	color: #0F172A;
 }
 
+li:hover{
+	color: #6D28D9;
+}
+
 body, html{
 	padding: 0px;
 	margin: 0px;
@@ -87,7 +91,7 @@ a{
 
 #chats-lable{
 	color: #94A3B8;
-	margin-left: 5%;
+	margin-left: 10%;
 }
 
 .discussion-list{
@@ -128,10 +132,28 @@ body::-webkit-scrollbar{
 	display: flex;
 	flex-direction: row;
 	border: 0.5px solid #E2E8F0;
+	border-top: 0 !important;
+	border-left: 0 !important;
 	padding: 1vw;
 	position: sticky;
 	top: 0;
 	background-color: #FCFDFF;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.online-model-selection{
+	display: flex;
+	flex-direction: row;
+	border: 0.5px solid #ece2f0;
+	border-top: 0 !important;
+	border-left: 0 !important;
+	padding: 1vw;
+	position: sticky;
+	top: 0;
+	background-color: #e1beef;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .add-chat{
@@ -156,6 +178,19 @@ body::-webkit-scrollbar{
 	color: #475569;
 }
 
+.chat-element:hover{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 5%;
+	margin: 5% 5% 5% 5%;
+	width: 90%;
+	border-radius: 15px;
+	color: #000000;
+	background-color: #F7F8FE;
+}
+
 .selected-class{
 	background-color: #FFFFFF;
 	color: #6D28D9;
@@ -168,4 +203,72 @@ body::-webkit-scrollbar{
 	margin: 5% 5% 5% 5%;
 	width: 90%;
 	border-radius: 15px;
+}
+
+.discussion-chat-name{
+	color: #1E293B;
+	font-size: 25px;
+	margin: 0;
+	font-weight: 600;
+}
+
+.switch-button{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 15px;
+}
+
+.model-lable{
+	color: #6D28D9;
+	font-weight: 600;
+}
+
+.discussion-container{
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.user-pdf-name{
+	display: flex;
+	background-color: #6141E8;
+	border: 1px solid #E2E8F0;
+	border-radius: 10px 10px 0px 10px;
+	color: #E2E8F0;
+	width: fit-content;
+	align-items: center;
+	justify-content: right;
+	padding: 0px 8px 0px 8px;
+	align-self: flex-end;
+}
+
+.quiz-content{
+	display: flex;
+	background-color: #FFFFFF;
+	border: 1px solid #E2E8F0;
+	border-radius: 10px 10px 10px 0px;
+	align-items: center;
+	justify-content: right;
+	padding: 0px 12px 0px 12px;
+	align-self: flex-start;
+	width: fit-content;
+}
+
+.end-chat-line{
+	background-color: #E2E8F0;
+	height: 1px;
+	width: 100%;
+	border: none;
+}
+
+.ai-statement{
+	color: #abafb5bc;
+	width: 20%;
+	margin-left: 40%;
+	margin-right: 40%;
+}
+
+h3:hover{
+	color: #6D28D9;
 }
