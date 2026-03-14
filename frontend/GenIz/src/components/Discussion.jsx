@@ -1,4 +1,5 @@
 import React from "react";
+import { BsFillTrash3Fill } from "react-icons/bs";
 
 function Discussion({id, source, quizzes}){
     return(
@@ -9,26 +10,31 @@ function Discussion({id, source, quizzes}){
 
             <div className="quiz-content">
 
-                <div>
+                <div className="quizzes">
                     <p><span>Id: </span>{id}</p> 
                     {quizzes.map((quiz, index) => (
                         <><h3 key={index}>{quiz.question}</h3>
                         <ul>
                             {Object.entries(quiz.options).map(([key, value]) => (
-                                <li>
-                                    <p><span>{key}</span> : <span>{value}</span></p>
+                                <li className="quizOptions">
+                                    <p><span>{key}</span>: <span>{value}</span></p>
                                 </li>
                             ))}
                         </ul>
-
-                        <p><span>Correct Answer: </span> {quiz.correct_answer}</p>
-                        <p><span>Explanation: </span> {quiz.explanation}</p>
+                        
+                        <div className="quiz-blur-element">
+                            <p className=""><span>Correct Answer: </span> <span className="correct-answer">{quiz.correct_answer}</span></p>
+                            <p><span>Explanation: </span> {quiz.explanation}</p>
+                        </div>
                         
                         <br />
+                        
                         </>
                     ))}
-                </div>
 
+                    <button className="delete-discussion-button"><BsFillTrash3Fill color="#6141E8" size="18px"/></button>
+
+                </div>
             </div>
 
             <hr className="end-chat-line"/>

@@ -8,11 +8,17 @@ function ChatControl(){
     const [chatName, setChatName] = useState('No Chat Selected');
     const [checked, setChecked] = useState(true);
     const [warningOnlineModel, setWarningOnlineModel] = useState('model-selection')
+    const [localModelStyle, setLocalModelStyle] = useState('model-lable-s')
+    const [onlineModelStyle, setOnlineModelStyle] = useState('model-lable-ns')
 
     const handleChange = (event) => {
         setChecked(event.target.checked);
 
         setWarningOnlineModel(event.target.checked ? 'model-selection' : 'online-model-selection');
+
+        setLocalModelStyle(event.target.checked ? 'model-lable-s' : 'model-lable-ns');
+
+        setOnlineModelStyle(event.target.checked ? 'model-lable-ns' : 'model-lable-s')
     };
 
 
@@ -64,7 +70,7 @@ function ChatControl(){
                     <p className="discussion-chat-name">{chatName}</p>
 
                     <div className="switch-button">
-                        <p>Online Model</p>
+                        <p className={onlineModelStyle}>Online Model</p>
                         <Switch 
                         checked={checked}
                         onChange={handleChange}
@@ -77,10 +83,10 @@ function ChatControl(){
                             },
                         }}
                         />
-                        <p className="model-lable">Local Model</p>
+                        <p className={localModelStyle}>Local Model</p>
                     </div>
                 </div>
-                <p className="ai-statement">AI responses may include mistakes</p>
+                <p className="ai-statement">- AI responses may include mistakes -</p>
                 
                 {quizzes.map((item) => {
                     const parseQuizzes = JSON.parse(item.quiz_content);
