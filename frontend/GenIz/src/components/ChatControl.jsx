@@ -2,15 +2,28 @@ import React, { useState } from "react";
 import Discussion from "./Discussion";
 import Chat from "./Chat";
 import Switch from '@mui/material/Switch'
+import { BsFillTrash3Fill } from "react-icons/bs";
 
 function ChatControl(){
+    //currently selected chat id (used by Chat item highlighting)
     const [selectId, setSelectedId] = useState(null);
+
+    //current chat display name in discussion header
     const [chatName, setChatName] = useState('No Chat Selected');
+
+    //switch control state: true=online model, false=local model
     const [checked, setChecked] = useState(true);
+
+    //class name for the top panel style (switches between online/local style wrapper)
     const [warningOnlineModel, setWarningOnlineModel] = useState('model-selection')
+
+    //active style for local model label
     const [localModelStyle, setLocalModelStyle] = useState('model-lable-s')
+
+    //active style for online model label
     const [onlineModelStyle, setOnlineModelStyle] = useState('model-lable-ns')
 
+    //toggle handler for the MUI Switch: updates multiple UI classes and checked state.
     const handleChange = (event) => {
         setChecked(event.target.checked);
 
@@ -54,10 +67,12 @@ function ChatControl(){
                 <button className="add-chat">New Chat</button>
                 <p id="chats-lable">Chats</p>
                 
+                {/*render the left chat list; each Chat component handles selection*/}
                 {chats.map((chat) =>(
                     <Chat 
                         key={chat.id}
                         name={chat.name}
+                        // selected class toggles by comparing state id
                         isSelected={selectId === chat.id}
                         onSelect={() => setSelectedId(chat.id)}
                         chatSelect={()=> setChatName(chat.name)}
@@ -67,7 +82,11 @@ function ChatControl(){
 
             <div className="discussion-list">
                 <div className={warningOnlineModel}>
-                    <p className="discussion-chat-name">{chatName}</p>
+                    <div className="delete-chat-block">
+                        <p className="discussion-chat-name">{chatName}</p>
+                        <button className="delete-discussion-button"><BsFillTrash3Fill color="#6141E8" size="18px"/></button>
+                    </div>
+                    
 
                     <div className="switch-button">
                         <p className={onlineModelStyle}>Online Model</p>
@@ -88,6 +107,7 @@ function ChatControl(){
                 </div>
                 <p className="ai-statement">- AI responses may include mistakes -</p>
                 
+                {/*render discussions by parsing quiz JSON and passing parsed quizzes to Discussion component*/}
                 {quizzes.map((item) => {
                     const parseQuizzes = JSON.parse(item.quiz_content);
                     const returnedQuizzes = parseQuizzes.quizzes;

@@ -25,7 +25,6 @@
 	min-width: 250px;
 	border-radius: 30px;
 	padding: 15px;
-
 }
 
 li{
@@ -75,12 +74,14 @@ a{
 	color: #1A202C;
 }
 
+/*main layout containing chat list + discussion view */
 .chat-discussion-panel{
 	height: calc(100vh - 100px);
 	display: flex;
 	flex-direction: row;
 }
 
+/*left side list of chats */
 .chat-list{
 	border: 0.5px solid #E2E8F0 ;
 	width: 20%;
@@ -155,8 +156,10 @@ body::-webkit-scrollbar{
 	background-color: #e1beef;
 	justify-content: space-between;
 	align-items: center;
+	z-index: 100;
 }
 
+/*button that adds a new chat entry */
 .add-chat{
 	padding: 1vw;
 	width: 80%;
@@ -167,6 +170,7 @@ body::-webkit-scrollbar{
 	border: 0px;
 }
 
+/*individual chat row style */
 .chat-element{
 	display: flex;
 	flex-direction: row;
@@ -189,9 +193,10 @@ body::-webkit-scrollbar{
 	width: 90%;
 	border-radius: 15px;
 	color: #000000;
-	background-color: #F7F8FE;
+	background-color: #eff0f8;
 }
 
+/*style for currently selected chat in list */
 .selected-class{
 	background-color: #FFFFFF;
 	color: #6D28D9;
@@ -206,6 +211,7 @@ body::-webkit-scrollbar{
 	border-radius: 15px;
 }
 
+/*title in discussion header showing selected chat */
 .discussion-chat-name{
 	color: #1E293B;
 	font-size: 25px;
@@ -213,6 +219,7 @@ body::-webkit-scrollbar{
 	font-weight: 600;
 }
 
+/*tontainer for model on/off switch labels + toggle */
 .switch-button{
 	display: flex;
 	flex-direction: row;
@@ -220,11 +227,13 @@ body::-webkit-scrollbar{
 	gap: 15px;
 }
 
+/*active model label style */
 .model-lable-s{
 	color: #6D28D9;
 	font-weight: 600;
 }
 
+/*inactive model label style */
 .model-lable-ns{
 	color: #475569;
 }
@@ -258,6 +267,7 @@ body::-webkit-scrollbar{
 	padding: 0px 12px 0px 18px;
 	align-self: flex-start;
 	width: fit-content;
+	padding-bottom: 10px;
 }
 
 .end-chat-line{
@@ -267,6 +277,7 @@ body::-webkit-scrollbar{
 	border: none;
 }
 
+/* Notice about AI output quality after model switch section */
 .ai-statement{
 	color: #abafb5bc;
 	width: 30%;
@@ -303,5 +314,19 @@ h3:hover{
 }
 
 .delete-discussion-button{
-	margin-bottom: 10px;
+	/* margin-bottom: 10px; */
+	border-radius: 5px;
+	border: 1px solid #6D28D9;
+	background-color: #ffffff;
+}
+
+.delete-discussion-button:hover{
+	background-color: #e1beef;
+}
+
+.delete-chat-block{
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	align-items: center;
 }

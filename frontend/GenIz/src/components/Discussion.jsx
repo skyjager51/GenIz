@@ -12,11 +12,13 @@ function Discussion({id, source, quizzes}){
 
                 <div className="quizzes">
                     <p><span>Id: </span>{id}</p> 
+
+                    {/*for each quiz item render question, options and hidden/show explanation with blur style*/}
                     {quizzes.map((quiz, index) => (
                         <><h3 key={index}>{quiz.question}</h3>
                         <ul>
                             {Object.entries(quiz.options).map(([key, value]) => (
-                                <li className="quizOptions">
+                                <li className="quizOptions" key={key}>
                                     <p><span>{key}</span>: <span>{value}</span></p>
                                 </li>
                             ))}

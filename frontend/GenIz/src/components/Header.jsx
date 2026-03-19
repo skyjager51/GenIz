@@ -17,6 +17,7 @@ function Header(){
                 </div>
 
                 <div className="route-container">
+                    {/*top navigation menu, using React Router <Link> components*/}
                     <ul className="routes">
                         <Link to={'/Home'}> <li>Home</li> </Link>
                         <Link to={'/Guide'}> <li>Guide</li> </Link>
