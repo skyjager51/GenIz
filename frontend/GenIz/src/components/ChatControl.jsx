@@ -3,6 +3,8 @@ import Discussion from "./Discussion";
 import Chat from "./Chat";
 import Switch from '@mui/material/Switch'
 import { BsFillTrash3Fill } from "react-icons/bs";
+import { PiExport } from "react-icons/pi";
+import { IoIosSend } from "react-icons/io";
 
 function ChatControl(){
     //currently selected chat id (used by Chat item highlighting)
@@ -120,8 +122,14 @@ function ChatControl(){
                         />
                     );
                 })}
-            </div>
 
+                {/*input box for pdf elements*/}
+                <div className="message-input">
+                    <button className="export-button">{<PiExport size="20px" color="#6D28D9"/>}</button>
+                    <p>Drag the pdf file here or click to open the file exlporer</p>
+                    <button className="send-button">{<IoIosSend size='25px' color="#6D28D9"/>}</button>
+                </div>
+            </div>
         </div>
     );
 }
