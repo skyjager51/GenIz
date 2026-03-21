@@ -294,6 +294,7 @@ body::-webkit-scrollbar{
 	align-self: flex-end;
 }
 
+/*response quiz chat block*/
 .quiz-content{
 	display: flex;
 	background-color: #FFFFFF;
@@ -351,7 +352,6 @@ h3:hover{
 }
 
 .delete-discussion-button{
-	/* margin-bottom: 10px; */
 	border-radius: 5px;
 	border: 1px solid #6D28D9;
 	background-color: #ffffff;
@@ -366,4 +366,14 @@ h3:hover{
 	flex-direction: row;
 	gap: 20px;
 	align-items: center;
+}
+
+/*text block style*/
+.text-block{
+	border: 1px solid #E2E8F0;
+	border-radius: 10px;
+	margin: 3%;
+	padding: 15px;
+	background-color: #FDFDFF;
+
 }
