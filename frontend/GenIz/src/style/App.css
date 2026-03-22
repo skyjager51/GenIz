@@ -1,0 +1,379 @@
+.header{
+	max-width: 100vw;
+	margin-top: 0vh;
+	border-bottom: 2px solid #E2E8F0;
+	background-color: #FDFDFF;
+	padding: 0.5vw 3vw 0.5vh 4vh;
+}
+
+.header-content{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.routes{
+  	display: flex;
+  	flex-direction: row;
+  	align-items: center;
+	justify-content: center;
+  	list-style-type: none;
+  	gap: 20%;
+	flex-wrap: wrap;
+	border: 1px solid #E2E8F0;
+	min-width: 250px;
+	border-radius: 30px;
+	padding: 15px;
+}
+
+li{
+	color: #0F172A;
+}
+
+li:hover{
+	color: #6D28D9;
+}
+
+body, html{
+	padding: 0px;
+	margin: 0px;
+	background-color: #F8F9FE;  
+	color: #0F172A;
+	height: 100%;
+	overflow: hidden;
+}
+
+.logo-image{
+	height: 70px;
+}
+
+.logo-container{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10%;
+}
+
+.user-info{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10%;
+}
+
+.user-image{
+	border-radius: 50%;
+	border: 2px solid rgb(39, 39, 39);
+	height: 40px;
+	width: 40px;
+}
+
+a{
+	text-decoration: none;
+	color: #1A202C;
+}
+
+/*main layout containing chat list + discussion view */
+.chat-discussion-panel{
+	height: calc(100vh - 100px);
+	display: flex;
+	flex-direction: row;
+}
+
+/*left side list of chats */
+.chat-list{
+	border: 0.5px solid #E2E8F0 ;
+	width: 20%;
+	background-color: #FBFBFE;
+	overflow-y: auto;
+	padding: 10px;
+}
+
+#chats-lable{
+	color: #94A3B8;
+	margin-left: 10%;
+}
+
+.discussion-list{
+	display: flex;
+	flex-direction: column;
+	flex-grow: auto;
+	border: 0.5px solid #E2E8F0;
+	width: 80%;
+	overflow-y: auto;
+	background-color: #F7F8FE;
+}
+
+.discussion-container{
+	padding: 20px;
+}
+
+body::-webkit-scrollbar{
+  scrollbar-width: none;
+}
+
+.discussion-list::-webkit-scrollbar{
+	scrollbar-width: none;
+}
+
+.chat-list::-webkit-scrollbar{
+	scrollbar-width: none;
+}
+
+.app-name{
+	font-size: 25px;
+}
+
+#span{
+	color: #7C3AED;
+}
+
+.model-selection{
+	display: flex;
+	flex-direction: row;
+	border: 0.5px solid #E2E8F0;
+	border-top: 0 !important;
+	border-left: 0 !important;
+	padding: 1vw;
+	position: sticky;
+	top: 0;
+	background-color: #FCFDFF;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 100;
+}
+
+/*input box for pdf elements*/
+.message-input{
+	background-color: #FEFEFF;
+	border: 1px solid #E2E8F0;
+	border-radius: 30px;
+	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
+	position: sticky;
+	bottom: 1%;
+	box-shadow: 0 0 30px 5px rgb(212, 212, 212);
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 2% 0 2%;
+	color: #94A3B8;
+}
+
+.export-button{
+	padding: 5px;
+	width: fit-content;
+	height: fit-content;
+	border: 1px solid #E2E8F0;
+	border-radius: 20px;
+	background-color: #F7F8FE;
+}
+
+.send-button{
+	padding: 5px;
+	width: fit-content;
+	height: fit-content;
+	border: 1px solid #E2E8F0;
+	border-radius: 20px;
+	background-color: #F7F8FE;
+}
+
+.online-model-selection{
+	display: flex;
+	flex-direction: row;
+	border: 0.5px solid #ece2f0;
+	border-top: 0 !important;
+	border-left: 0 !important;
+	padding: 1vw;
+	position: sticky;
+	top: 0;
+	background-color: #e1beef;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 100;
+}
+
+/*button that adds a new chat entry */
+.add-chat{
+	padding: 1vw;
+	width: 80%;
+	margin: 5% 10% 5% 10%;
+	color: #FDFDFF;
+	background-color: #0F172A;
+	border-radius: 15px;
+	border: 0px;
+}
+
+/*individual chat row style */
+.chat-element{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 5%;
+	margin: 5% 5% 5% 5%;
+	width: 90%;
+	border-radius: 15px;
+	color: #475569;
+}
+
+.chat-element:hover{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 5%;
+	margin: 5% 5% 5% 5%;
+	width: 90%;
+	border-radius: 15px;
+	color: #000000;
+	background-color: #eff0f8;
+}
+
+/*style for currently selected chat in list */
+.selected-class{
+	background-color: #FFFFFF;
+	color: #6D28D9;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 5%;
+	border: 1px solid #E2E8F0;
+	margin: 5% 5% 5% 5%;
+	width: 90%;
+	border-radius: 15px;
+}
+
+/*title in discussion header showing selected chat */
+.discussion-chat-name{
+	color: #1E293B;
+	font-size: 25px;
+	margin: 0;
+	font-weight: 600;
+}
+
+/*tontainer for model on/off switch labels + toggle */
+.switch-button{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 15px;
+}
+
+/*active model label style */
+.model-lable-s{
+	color: #6D28D9;
+	font-weight: 600;
+}
+
+/*inactive model label style */
+.model-lable-ns{
+	color: #475569;
+}
+
+.discussion-container{
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.user-pdf-name{
+	display: flex;
+	background-color: #6141E8;
+	border: 1px solid #E2E8F0;
+	border-radius: 10px 10px 0px 10px;
+	color: #E2E8F0;
+	width: fit-content;
+	align-items: center;
+	justify-content: right;
+	padding: 0px 8px 0px 8px;
+	align-self: flex-end;
+}
+
+/*response quiz chat block*/
+.quiz-content{
+	display: flex;
+	background-color: #FFFFFF;
+	border: 1px solid #E2E8F0;
+	border-radius: 10px 10px 10px 0px;
+	align-items: center;
+	justify-content: right;
+	padding: 0px 12px 0px 18px;
+	align-self: flex-start;
+	width: fit-content;
+	padding-bottom: 10px;
+}
+
+.end-chat-line{
+	background-color: #E2E8F0;
+	height: 1px;
+	width: 100%;
+	border: none;
+}
+
+/* Notice about AI output quality after model switch section */
+.ai-statement{
+	color: #abafb5bc;
+	width: 30%;
+	margin-left: 40%;
+	margin-right: 40%;
+}
+
+h3:hover{
+	color: #6D28D9;
+}
+
+.quizOptions{
+	list-style-type: none;
+
+}
+
+.quiz-blur-element{
+	filter: blur(5px);
+	width: fit-content;
+}
+
+.quiz-blur-element:hover{
+	filter: blur(0px);
+	z-index: -1;
+}
+
+.quizzes{
+	width: fit-content;
+}
+
+.correct-answer{
+	color: #6D28D9;
+	font-weight: bolder;
+}
+
+.delete-discussion-button{
+	border-radius: 5px;
+	border: 1px solid #6D28D9;
+	background-color: #ffffff;
+}
+
+.delete-discussion-button:hover{
+	background-color: #e1beef;
+}
+
+.delete-chat-block{
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	align-items: center;
+}
+
+/*text block style*/
+.text-block{
+	border: 1px solid #E2E8F0;
+	border-radius: 10px;
+	margin: 3%;
+	padding: 15px;
+	background-color: #FDFDFF;
+
+}
