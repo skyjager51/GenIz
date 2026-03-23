@@ -91,6 +91,12 @@ a{
 	padding: 10px;
 }
 
+.chat-name{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 #chats-lable{
 	color: #94A3B8;
 	margin-left: 10%;

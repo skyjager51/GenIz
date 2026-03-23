@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Discussion from "./Discussion";
 import Chat from "./Chat";
 import Switch from '@mui/material/Switch'
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { PiExport } from "react-icons/pi";
 import { IoIosSend } from "react-icons/io";
+import axios from "axios";
 
 function ChatControl(){
     //currently selected chat id (used by Chat item highlighting)
@@ -36,32 +37,95 @@ function ChatControl(){
         setOnlineModelStyle(event.target.checked ? 'model-lable-ns' : 'model-lable-s')
     };
 
+    //create base axios api 
+    //axios request to get user data
+    const api = axios.create({
+        baseURL: 'http://localhost:8080',
+        withCredentials: true
+    });
 
-    const chats = [
-        { id: 1, name: "Chat One" },
-        { id: 2, name: "Chat Two" },
-        { id: 3, name: "Chat Three" },
-        { id: 4, name: "Chat Four" },
-        { id: 5, name: "Chat Five" },
-        { id: 6, name: "Chat Six" },
-        { id: 7, name: "Chat Seven" },
-        { id: 8, name: "Chat Eight" },
-        { id: 9, name: "Chat Nine" },
-        { id: 10, name: "Chat Ten" },
-    ];
+    //retrieve current user chats from db
+    const CurrentUserChats = () => {
+        const [data, setData] = useState([]);
+        const [loading, setLoading] = useState(true);
 
-    const quizzes = [
-        {
-            "discussion_id": 31,
-            "quiz_content": "{\n    \"quizzes\": [\n        {\n            \"question\": \"Which of the following are core components the application should provide to the user?\",\n            \"options\": {\n                \"A\": \"UI, backend logic, AI for quiz generation, and database to save chats\",\n                \"B\": \"Only a UI and a backend logic with no AI or database\",\n                \"C\": \"A database for chats and an authentication layer only\",\n                \"D\": \"Cloud infrastructure for deployment and advanced networking\"\n            },\n            \"explanation\": \"The document states that the app should provide UI, backend logic, AI for quiz generation, and a DB to save chats as its core components.\",\n            \"correct_answer\": \"A\"\n        },\n        {\n            \"question\": \"How should the application's different services communicate with each other?\",\n            \"options\": {\n                \"A\": \"Through direct memory access\",\n                \"B\": \"Via API calls\",\n                \"C\": \"Using shared file systems\",\n                \"D\": \"By passing messages through a central queue service\"\n            },\n            \"explanation\": \"The text explicitly states that 'the microservices containers should be able to communicate to each other via api'.\",\n            \"correct_answer\": \"B\"\n        },\n        {\n            \"question\": \"What is the primary reason for choosing 'docker model runner' over Ollama as mentioned in the text?\",\n            \"options\": {\n                \"A\": \"Ollama does not support Nvidia GPUs.\",\n                \"B\": \"Docker model runner offers better performance when Ollama runs only over the CPU while containerized.\",\n                \"C\": \"Ollama requires a stable internet connection, which is not always available.\",\n                \"D\": \"Docker model runner provides advanced analytics for model performance.\"\n            },\n            \"explanation\": \"The document states: 'This is probably the better solution since ollama is too slow by running Only over the cpu while containerised'.\",\n            \"correct_answer\": \"B\"\n        },\n        {\n            \"question\": \"What mechanism is suggested for connecting the main application to the docker model runner?\",\n            \"options\": {\n                \"A\": \"A direct SSH tunnel\",\n                \"B\": \"Resolving the special DNS 'docker.internal.host'\",\n                \"C\": \"Using a dedicated VPN connection\",\n                \"D\": \"Via a message broker like Kafka\"\n            },\n            \"explanation\": \"The text mentions: 'The model runner uses the model by running it on the local host machine, this is because I have to resolve the special dns (docker.internal.host) to be able to connect to it.'\",\n            \"correct_answer\": \"B\"\n        },\n        {\n            \"question\": \"How should the application handle potentially slow responses from the AI model?\",\n            \"options\": {\n                \"A\": \"By implementing aggressive caching strategies.\",\n                \"B\": \"By closing the connection and retrying later.\",\n                \"C\": \"By handling 202 Accepted connections.\",\n                \"D\": \"By increasing the timeout for all API calls.\"\n            },\n            \"explanation\": \"The text specifies: 'the appliation should handle 202 accepted connections, since the response form the model may take a while.'\",\n            \"correct_answer\": \"C\"\n        },\n        {\n            \"question\": \"What is expected to happen automatically once the application has started up after the runner execution?\",\n            \"options\": {\n                \"A\": \"It should send a notification to the user's email.\",\n                \"B\": \"It should automatically open the web browser page for the home.\",\n                \"C\": \"It should display a command-line interface.\",\n                \"D\": \"It should prompt the user to configure network settings.\"\n            },\n            \"explanation\": \"The 'Description of the application' section states: 'once the applicaton started up, it should automatically open the web browser page for the home.'\",\n            \"correct_answer\": \"B\"\n        },\n        {\n            \"question\": \"Which file should allow the user to easily change the AI model being used?\",\n            \"options\": {\n                \"A\": \"The application's settings.json file\",\n                \"B\": \"The user interface configuration panel\",\n                \"C\": \"The docker-compose file\",\n                \"D\": \"A dedicated model management API\"\n            },\n            \"explanation\": \"The document states: 'the user should be ablke to easily change the model from the docker-compose file.'\",\n            \"correct_answer\": \"C\"\n        }\n    ]\n}",
-            "user_pdf_name": "dev_docs.txt"
-        },
-        {
-            "discussion_id": 32,
-            "quiz_content": "{\n    \"quizzes\": [\n        {\n            \"question\": \"Which of the following are core components the application should provide to the user?\",\n            \"options\": {\n                \"A\": \"UI, backend logic, AI for quiz generation, and database to save chats\",\n                \"B\": \"Only a UI and a backend logic with no AI or database\",\n                \"C\": \"A database for chats and an authentication layer only\",\n                \"D\": \"Cloud infrastructure for deployment and advanced networking\"\n            },\n            \"explanation\": \"The document states that the app should provide UI, backend logic, AI for quiz generation, and a DB to save chats as its core components.\",\n            \"correct_answer\": \"A\"\n        },\n        {\n            \"question\": \"How should the application's different services communicate with each other?\",\n            \"options\": {\n                \"A\": \"Through direct memory access\",\n                \"B\": \"Via API calls\",\n                \"C\": \"Using shared file systems\",\n                \"D\": \"By passing messages through a central queue service\"\n            },\n            \"explanation\": \"The text explicitly states that 'the microservices containers should be able to communicate to each other via api'.\",\n            \"correct_answer\": \"B\"\n        },\n        {\n            \"question\": \"What is the primary reason for choosing 'docker model runner' over Ollama as mentioned in the text?\",\n            \"options\": {\n                \"A\": \"Ollama does not support Nvidia GPUs.\",\n                \"B\": \"Docker model runner offers better performance when Ollama runs only over the CPU while containerized.\",\n                \"C\": \"Ollama requires a stable internet connection, which is not always available.\",\n                \"D\": \"Docker model runner provides advanced analytics for model performance.\"\n            },\n            \"explanation\": \"The document states: 'This is probably the better solution since ollama is too slow by running Only over the cpu while containerised'.\",\n            \"correct_answer\": \"B\"\n        },\n        {\n            \"question\": \"What mechanism is suggested for connecting the main application to the docker model runner?\",\n            \"options\": {\n                \"A\": \"A direct SSH tunnel\",\n                \"B\": \"Resolving the special DNS 'docker.internal.host'\",\n                \"C\": \"Using a dedicated VPN connection\",\n                \"D\": \"Via a message broker like Kafka\"\n            },\n            \"explanation\": \"The text mentions: 'The model runner uses the model by running it on the local host machine, this is because I have to resolve the special dns (docker.internal.host) to be able to connect to it.'\",\n            \"correct_answer\": \"B\"\n        },\n        {\n            \"question\": \"How should the application handle potentially slow responses from the AI model?\",\n            \"options\": {\n                \"A\": \"By implementing aggressive caching strategies.\",\n                \"B\": \"By closing the connection and retrying later.\",\n                \"C\": \"By handling 202 Accepted connections.\",\n                \"D\": \"By increasing the timeout for all API calls.\"\n            },\n            \"explanation\": \"The text specifies: 'the appliation should handle 202 accepted connections, since the response form the model may take a while.'\",\n            \"correct_answer\": \"C\"\n        },\n        {\n            \"question\": \"What is expected to happen automatically once the application has started up after the runner execution?\",\n            \"options\": {\n                \"A\": \"It should send a notification to the user's email.\",\n                \"B\": \"It should automatically open the web browser page for the home.\",\n                \"C\": \"It should display a command-line interface.\",\n                \"D\": \"It should prompt the user to configure network settings.\"\n            },\n            \"explanation\": \"The 'Description of the application' section states: 'once the applicaton started up, it should automatically open the web browser page for the home.'\",\n            \"correct_answer\": \"B\"\n        },\n        {\n            \"question\": \"Which file should allow the user to easily change the AI model being used?\",\n            \"options\": {\n                \"A\": \"The application's settings.json file\",\n                \"B\": \"The user interface configuration panel\",\n                \"C\": \"The docker-compose file\",\n                \"D\": \"A dedicated model management API\"\n            },\n            \"explanation\": \"The document states: 'the user should be ablke to easily change the model from the docker-compose file.'\",\n            \"correct_answer\": \"C\"\n        }\n    ]\n}",
-            "user_pdf_name": "dev_docs.txt"
-        }
-    ];
+        useEffect(() => {
+            const chatContent = async() => {
+                try{
+                    const response = await api.get('/database/interactions/retrieve-all-chats');
+                    setData(response.data);
+                } catch (err) {
+                    if (err.response?.status === 401){
+                        window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                        return;
+                    }
+                } finally {
+                    setLoading(false);
+                }
+            };
+            chatContent();
+        }, []);
+
+        if(loading) return<div>Loading...</div>;
+        if (data.length === 0) return null;
+
+        return(
+            data.map((chat) =>(
+                    <Chat 
+                        key={chat.chat_id}
+                        name={chat.chat_name}
+                        // selected class toggles by comparing state id
+                        isSelected={selectId === chat.chat_id}
+                        onSelect={() => setSelectedId(chat.chat_id)}
+                        chatSelect={()=> setChatName(chat.chat_name)}
+                    />
+                ))
+        );
+    }
+
+    //retrieve current chat discussion(s) from db
+    const CurrentDiscussions = () => {
+        const [disc_data, setDiscData] = useState([]);
+        const [disc_loading, setDiscLoading] = useState(true);
+
+        useEffect(() => {
+            const discussionContent = async() => {
+                try{
+                    const disc_response = await api.get('/database/interactions/retrieve-all-discussions/' + selectId);
+                    setDiscData(disc_response.data);
+                } catch (err) {
+                    if (err.response?.status === 401){
+                        window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                        return;
+                    }
+                } finally {
+                    setDiscLoading(false);
+                }
+            };
+            discussionContent();
+        }, []);
+
+        if(disc_loading) return<div>Loading...</div>;
+        if (disc_data.length === 0) return null;
+
+        return(
+            disc_data.map((item) => {
+                const parseQuizzes = JSON.parse(item.quiz_content);
+                const returnedQuizzes = parseQuizzes.quizzes;
+    
+                return(
+                   <Discussion
+                        key={item.discussion_id}
+                        id={item.discussion_id}
+                        source={item.user_pdf_name}
+                        quizzes={returnedQuizzes}
+                    /> 
+                );
+            })
+        );
+
+    }
+
 
     return(
         <div className="chat-discussion-panel">
@@ -70,16 +134,7 @@ function ChatControl(){
                 <p id="chats-lable">Chats</p>
                 
                 {/*render the left chat list; each Chat component handles selection*/}
-                {chats.map((chat) =>(
-                    <Chat 
-                        key={chat.id}
-                        name={chat.name}
-                        // selected class toggles by comparing state id
-                        isSelected={selectId === chat.id}
-                        onSelect={() => setSelectedId(chat.id)}
-                        chatSelect={()=> setChatName(chat.name)}
-                    />
-                ))}
+                <CurrentUserChats></CurrentUserChats>
             </div>
 
             <div className="discussion-list">
@@ -110,18 +165,7 @@ function ChatControl(){
                 <p className="ai-statement">- AI responses may include mistakes -</p>
                 
                 {/*render discussions by parsing quiz JSON and passing parsed quizzes to Discussion component*/}
-                {quizzes.map((item) => {
-                    const parseQuizzes = JSON.parse(item.quiz_content);
-                    const returnedQuizzes = parseQuizzes.quizzes;
-
-                    return(
-                        <Discussion
-                            id={item.discussion_id}
-                            source={item.user_pdf_name}
-                            quizzes={returnedQuizzes}
-                        />
-                    );
-                })}
+                <CurrentDiscussions></CurrentDiscussions>
 
                 {/*input box for pdf elements*/}
                 <div className="message-input">
