@@ -100,6 +100,7 @@ const CurrentModelUsageType = ({toggleModel, handleChange, checked}) => {
     const [model_data, set_model_data] = useState(true);
     const [model_loading, set_model_loading] = useState(true);
 
+    //retrieve
     useEffect(() => {
         const getCurrentModelSetting = async() => {
             try{
@@ -138,6 +139,9 @@ const CurrentModelUsageType = ({toggleModel, handleChange, checked}) => {
     );
 }
 
+//create new chat
+
+
 function ChatControl(){
     //currently selected chat id (used by Chat item highlighting)
     const [selectId, setSelectedId] = useState(null);
@@ -146,7 +150,7 @@ function ChatControl(){
     const [chatName, setChatName] = useState('No Chat Selected');
 
     //switch control state: true=online model, false=local model
-    const [checked, setChecked] = useState(true);
+    const [checked, setChecked] = useState();
 
     //class name for the top panel style (switches between online/local style wrapper)
     const [warningOnlineModel, setWarningOnlineModel] = useState('model-selection')
@@ -167,9 +171,41 @@ function ChatControl(){
 
         setOnlineModelStyle(isLocalModel ? 'model-lable-ns' : 'model-lable-s')
     }
-    //toggle handler for the MUI Switch: updates multiple UI classes and checked state.
-    const handleChange = (event) => {
-        toggleModel(event.target.checked)
+    //toggle handler for the user, on change update the db.
+    const handleChange = async (event) => {
+        const newValue = event.target.checked;
+        
+        toggleModel(newValue);
+
+        try {
+            const response = await api.post('/database/interactions/running-model-setting', {
+                modelSetting: newValue
+            });
+            //if the new value is different from the current one, change it
+            if (response.data.use_local_model !== newValue) {
+                toggleModel(response.data.use_local_model);
+            }
+
+        } catch (err) {
+            if (err.response?.status === 401){
+                window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                return;
+            }
+
+            if (err.response?.status === 500){
+                const paragrafo = document.querySelector('.message-input p');
+
+                paragrafo.textContent = err.response?.data?.exceptionErrorMessage;
+
+                function resetText(){
+                    paragrafo.textContent = 'Drag the pdf file here or click to open the file exlporer';
+                };
+
+                setTimeout(resetText, 10000);
+
+                return;
+            }
+        }
     };
 
 
