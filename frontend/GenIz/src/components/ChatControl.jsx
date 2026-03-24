@@ -6,6 +6,7 @@ import { BsFillTrash3Fill } from "react-icons/bs";
 import { PiExport } from "react-icons/pi";
 import { IoIosSend } from "react-icons/io";
 import axios from "axios";
+import {generate} from 'random-words'
 
 //create base axios api 
 //axios request to get user data
@@ -15,7 +16,7 @@ const api = axios.create({
 });
 
 //retrieve current user chats from db
-const CurrentUserChats = ({selectId, setSelectedId, setChatName}) => {
+const CurrentUserChats = ({selectId, setSelectedId, setChatName, refreshFlag}) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -34,7 +35,7 @@ const CurrentUserChats = ({selectId, setSelectedId, setChatName}) => {
             }
         };
         chatContent();
-    }, []);
+    }, [refreshFlag]);
 
     if(loading) return<div>Loading...</div>;
     if (data.length === 0) return null;
@@ -140,7 +141,37 @@ const CurrentModelUsageType = ({toggleModel, handleChange, checked}) => {
 }
 
 //create new chat
+const saveNewChat = async(setRefreshFlag) => {
+    try{
+        const createChat = await api.post('/database/interactions/save-new-chat',
+            {chatName : 'New Chat ' + generate({ minLength: 5, maxLength: 8 })}
+        );
+        console.log(createChat);
+        setRefreshFlag(prev => prev + 1);
 
+    } catch(err) {
+        if (err.response?.status === 401){
+            window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+            return;
+        }
+
+        if (err.response?.status === 500){
+            const paragrafo = document.querySelector('.message-input p');
+
+            paragrafo.textContent = err.response?.data?.exceptionErrorMessage;
+
+            function resetText(){
+                paragrafo.textContent = 'Drag the pdf file here or click to open the file exlporer';
+            };
+
+            setTimeout(resetText, 10000);
+
+            return;
+        }
+    }
+
+    //does not return anything, i pass the props to manage the input field under the new caht button
+}
 
 function ChatControl(){
     //currently selected chat id (used by Chat item highlighting)
@@ -161,6 +192,9 @@ function ChatControl(){
     //active style for online model label
     const [onlineModelStyle, setOnlineModelStyle] = useState('model-lable-ns')
 
+    //current counter state for chat refresh
+    const [refreshFlag, setRefreshFlag] = useState(0);
+
     //reusable toggle finction 
     const toggleModel = (isLocalModel) => {
         setChecked(isLocalModel);
@@ -171,6 +205,7 @@ function ChatControl(){
 
         setOnlineModelStyle(isLocalModel ? 'model-lable-ns' : 'model-lable-s')
     }
+
     //toggle handler for the user, on change update the db.
     const handleChange = async (event) => {
         const newValue = event.target.checked;
@@ -212,7 +247,7 @@ function ChatControl(){
     return(
         <div className="chat-discussion-panel">
             <div className="chat-list">
-                <button className="add-chat">New Chat</button>
+                <button className="add-chat" onClick={() => saveNewChat(setRefreshFlag)}>New Chat</button>
                 <p id="chats-lable">Chats</p>
                 
                 {/*render the left chat list; each Chat component handles selection*/}
@@ -220,6 +255,7 @@ function ChatControl(){
                     selectId={selectId}
                     setSelectedId={setSelectedId}
                     setChatName={setChatName}
+                    refreshFlag={refreshFlag}
                 />
             </div>
 

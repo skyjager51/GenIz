@@ -120,7 +120,7 @@ public class QuizDaoImpl implements QuizDaoInterface{
         //query the db to return only chats that are owned by the specific user
        
         TypedQuery<ChatEntity> chatQuery = entityManager.createQuery(
-            "SELECT c FROM ChatEntity c WHERE c.defUserEntity.id = :userId", ChatEntity.class);
+            "SELECT c FROM ChatEntity c WHERE c.defUserEntity.id = :userId ORDER BY c.chat_id DESC", ChatEntity.class);
         
         chatQuery.setParameter("userId", userDataDTO.getId());
 
