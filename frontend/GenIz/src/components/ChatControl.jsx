@@ -7,6 +7,137 @@ import { PiExport } from "react-icons/pi";
 import { IoIosSend } from "react-icons/io";
 import axios from "axios";
 
+//create base axios api 
+//axios request to get user data
+const api = axios.create({
+    baseURL: 'http://localhost:8080',
+    withCredentials: true
+});
+
+//retrieve current user chats from db
+const CurrentUserChats = ({selectId, setSelectedId, setChatName}) => {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const chatContent = async() => {
+            try{
+                const response = await api.get('/database/interactions/retrieve-all-chats');
+                setData(response.data);
+            } catch (err) {
+                if (err.response?.status === 401){
+                    window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                    return;
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+        chatContent();
+    }, []);
+
+    if(loading) return<div>Loading...</div>;
+    if (data.length === 0) return null;
+
+    return(
+        data.map((chat) =>(
+                <Chat 
+                    key={chat.chat_id}
+                    name={chat.chat_name}
+                    // selected class toggles by comparing state id
+                    isSelected={selectId === chat.chat_id}
+                    onSelect={() => setSelectedId(chat.chat_id)}
+                    chatSelect={()=> setChatName(chat.chat_name)}
+                />
+            ))
+    );
+}
+
+//retrieve current chat discussion(s) from db
+const CurrentDiscussions = ({selectId}) => {
+    const [disc_data, setDiscData] = useState([]);
+    const [disc_loading, setDiscLoading] = useState(true);
+
+    useEffect(() => {
+        const discussionContent = async() => {
+            try{
+                const disc_response = await api.get('/database/interactions/retrieve-all-discussions/' + selectId);
+                setDiscData(disc_response.data);
+            } catch (err) {
+                if (err.response?.status === 401){
+                    window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                    return;
+                }
+            } finally {
+                setDiscLoading(false);
+            }
+        };
+        discussionContent();
+    }, [selectId]);
+
+    if(disc_loading) return<div>Loading...</div>;
+    if (disc_data.length === 0) return null;
+
+    return(
+        disc_data.map((item) => {
+            const parseQuizzes = JSON.parse(item.quiz_content);
+            const returnedQuizzes = parseQuizzes.quizzes;
+
+            return(
+                <Discussion
+                    key={item.discussion_id}
+                    id={item.discussion_id}
+                    source={item.user_pdf_name}
+                    quizzes={returnedQuizzes}
+                /> 
+            );
+        })
+    );
+}
+
+//retrieve current model type usage from db
+const CurrentModelUsageType = ({toggleModel, handleChange, checked}) => {
+    const [model_data, set_model_data] = useState(true);
+    const [model_loading, set_model_loading] = useState(true);
+
+    useEffect(() => {
+        const getCurrentModelSetting = async() => {
+            try{
+                const modelSettingResponse = await api.get('/database/interactions/retrieve-model-setting');
+                set_model_data(modelSettingResponse.data);
+                toggleModel(modelSettingResponse.data.use_local_model);
+            } catch (err) {
+                if (err.response?.status === 401){
+                    window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                    return;
+                }
+            } finally {
+                set_model_loading(false);
+            }
+        };
+        getCurrentModelSetting();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    if(model_loading) return<div>Loading...</div>;
+    if (model_data === null) return null;
+
+    return(
+        <Switch 
+            checked={checked}
+            onChange={handleChange}
+            sx={{
+                '& .MuiSwitch-switchBase.Mui-checked': {
+                color: '#6D28D9', // The circle color when ON
+                },
+                '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                backgroundColor: '#6D28D9', // The bar color when ON
+                },
+            }}
+        />
+    );
+}
+
 function ChatControl(){
     //currently selected chat id (used by Chat item highlighting)
     const [selectId, setSelectedId] = useState(null);
@@ -26,105 +157,20 @@ function ChatControl(){
     //active style for online model label
     const [onlineModelStyle, setOnlineModelStyle] = useState('model-lable-ns')
 
+    //reusable toggle finction 
+    const toggleModel = (isLocalModel) => {
+        setChecked(isLocalModel);
+
+        setWarningOnlineModel(isLocalModel ? 'model-selection' : 'online-model-selection');
+
+        setLocalModelStyle(isLocalModel ? 'model-lable-s' : 'model-lable-ns');
+
+        setOnlineModelStyle(isLocalModel ? 'model-lable-ns' : 'model-lable-s')
+    }
     //toggle handler for the MUI Switch: updates multiple UI classes and checked state.
     const handleChange = (event) => {
-        setChecked(event.target.checked);
-
-        setWarningOnlineModel(event.target.checked ? 'model-selection' : 'online-model-selection');
-
-        setLocalModelStyle(event.target.checked ? 'model-lable-s' : 'model-lable-ns');
-
-        setOnlineModelStyle(event.target.checked ? 'model-lable-ns' : 'model-lable-s')
+        toggleModel(event.target.checked)
     };
-
-    //create base axios api 
-    //axios request to get user data
-    const api = axios.create({
-        baseURL: 'http://localhost:8080',
-        withCredentials: true
-    });
-
-    //retrieve current user chats from db
-    const CurrentUserChats = () => {
-        const [data, setData] = useState([]);
-        const [loading, setLoading] = useState(true);
-
-        useEffect(() => {
-            const chatContent = async() => {
-                try{
-                    const response = await api.get('/database/interactions/retrieve-all-chats');
-                    setData(response.data);
-                } catch (err) {
-                    if (err.response?.status === 401){
-                        window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
-                        return;
-                    }
-                } finally {
-                    setLoading(false);
-                }
-            };
-            chatContent();
-        }, []);
-
-        if(loading) return<div>Loading...</div>;
-        if (data.length === 0) return null;
-
-        return(
-            data.map((chat) =>(
-                    <Chat 
-                        key={chat.chat_id}
-                        name={chat.chat_name}
-                        // selected class toggles by comparing state id
-                        isSelected={selectId === chat.chat_id}
-                        onSelect={() => setSelectedId(chat.chat_id)}
-                        chatSelect={()=> setChatName(chat.chat_name)}
-                    />
-                ))
-        );
-    }
-
-    //retrieve current chat discussion(s) from db
-    const CurrentDiscussions = () => {
-        const [disc_data, setDiscData] = useState([]);
-        const [disc_loading, setDiscLoading] = useState(true);
-
-        useEffect(() => {
-            const discussionContent = async() => {
-                try{
-                    const disc_response = await api.get('/database/interactions/retrieve-all-discussions/' + selectId);
-                    setDiscData(disc_response.data);
-                } catch (err) {
-                    if (err.response?.status === 401){
-                        window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
-                        return;
-                    }
-                } finally {
-                    setDiscLoading(false);
-                }
-            };
-            discussionContent();
-        }, []);
-
-        if(disc_loading) return<div>Loading...</div>;
-        if (disc_data.length === 0) return null;
-
-        return(
-            disc_data.map((item) => {
-                const parseQuizzes = JSON.parse(item.quiz_content);
-                const returnedQuizzes = parseQuizzes.quizzes;
-    
-                return(
-                   <Discussion
-                        key={item.discussion_id}
-                        id={item.discussion_id}
-                        source={item.user_pdf_name}
-                        quizzes={returnedQuizzes}
-                    /> 
-                );
-            })
-        );
-
-    }
 
 
     return(
@@ -134,7 +180,11 @@ function ChatControl(){
                 <p id="chats-lable">Chats</p>
                 
                 {/*render the left chat list; each Chat component handles selection*/}
-                <CurrentUserChats></CurrentUserChats>
+                <CurrentUserChats
+                    selectId={selectId}
+                    setSelectedId={setSelectedId}
+                    setChatName={setChatName}
+                />
             </div>
 
             <div className="discussion-list">
@@ -147,17 +197,11 @@ function ChatControl(){
 
                     <div className="switch-button">
                         <p className={onlineModelStyle}>Online Model</p>
-                        <Switch 
-                        checked={checked}
-                        onChange={handleChange}
-                        sx={{
-                            '& .MuiSwitch-switchBase.Mui-checked': {
-                            color: '#6D28D9', // The circle color when ON
-                            },
-                            '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                            backgroundColor: '#6D28D9', // The bar color when ON
-                            },
-                        }}
+                        <CurrentModelUsageType
+                            toggleModel={toggleModel}
+                            handleChange={handleChange}
+                            checked={checked}
+                            selectId={selectId}
                         />
                         <p className={localModelStyle}>Local Model</p>
                     </div>
@@ -165,7 +209,9 @@ function ChatControl(){
                 <p className="ai-statement">- AI responses may include mistakes -</p>
                 
                 {/*render discussions by parsing quiz JSON and passing parsed quizzes to Discussion component*/}
-                <CurrentDiscussions></CurrentDiscussions>
+                <CurrentDiscussions
+                    selectId={selectId}
+                />
 
                 {/*input box for pdf elements*/}
                 <div className="message-input">
