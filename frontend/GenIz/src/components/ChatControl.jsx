@@ -144,7 +144,7 @@ const CurrentModelUsageType = ({toggleModel, handleChange, checked}) => {
 const saveNewChat = async(setRefreshFlag) => {
     try{
         const createChat = await api.post('/database/interactions/save-new-chat',
-            {chatName : 'New Chat ' + generate({ minLength: 5, maxLength: 8 })}
+            {chatName : 'New Chat ' + generate({ minLength: 3, maxLength: 8 })}
         );
         console.log(createChat);
         setRefreshFlag(prev => prev + 1);
@@ -169,8 +169,36 @@ const saveNewChat = async(setRefreshFlag) => {
             return;
         }
     }
+}
 
-    //does not return anything, i pass the props to manage the input field under the new caht button
+//delete current chat
+const deleteChat = async(setRefreshFlag, chat_id, setChatName) => {
+    try{
+        const deletedChat = await api.delete('/database/interactions/delete-chat/' + chat_id);
+        console.log(deletedChat);
+        setRefreshFlag(prev => prev + 1);
+        setChatName('No Chat Selected');
+
+    } catch(err) {
+        if (err.response?.status === 401){
+            window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+            return;
+        }
+
+        if (err.response?.status === 500){
+            const paragrafo = document.querySelector('.message-input p');
+
+            paragrafo.textContent = err.response?.data?.exceptionErrorMessage;
+
+            function resetText(){
+                paragrafo.textContent = 'Drag the pdf file here or click to open the file exlporer';
+            };
+
+            setTimeout(resetText, 10000);
+
+            return;
+        }
+    }
 }
 
 function ChatControl(){
@@ -263,7 +291,8 @@ function ChatControl(){
                 <div className={warningOnlineModel}>
                     <div className="delete-chat-block">
                         <p className="discussion-chat-name">{chatName}</p>
-                        <button className="delete-discussion-button"><BsFillTrash3Fill color="#6141E8" size="18px"/></button>
+                        <button className="delete-discussion-button" onClick={() => deleteChat(setRefreshFlag, selectId, setChatName)}>
+                            <BsFillTrash3Fill color="#6141E8" size="18px"/></button>
                     </div>
                     
 
