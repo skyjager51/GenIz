@@ -60,10 +60,17 @@ const CurrentDiscussions = ({selectId}) => {
     const [disc_loading, setDiscLoading] = useState(true);
 
     useEffect(() => {
+        if (selectId === null) {
+            setDiscData([]);
+            setDiscLoading(false);
+            return;
+        };
+
         const discussionContent = async() => {
             try{
                 const disc_response = await api.get('/database/interactions/retrieve-all-discussions/' + selectId);
                 setDiscData(disc_response.data);
+
             } catch (err) {
                 if (err.response?.status === 401){
                     window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
@@ -172,12 +179,13 @@ const saveNewChat = async(setRefreshFlag) => {
 }
 
 //delete current chat
-const deleteChat = async(setRefreshFlag, chat_id, setChatName) => {
+const deleteChat = async(setRefreshFlag, chat_id, setChatName, setSelectedId) => {
     try{
         const deletedChat = await api.delete('/database/interactions/delete-chat/' + chat_id);
         console.log(deletedChat);
         setRefreshFlag(prev => prev + 1);
         setChatName('No Chat Selected');
+        setSelectedId(null);
 
     } catch(err) {
         if (err.response?.status === 401){
@@ -291,7 +299,7 @@ function ChatControl(){
                 <div className={warningOnlineModel}>
                     <div className="delete-chat-block">
                         <p className="discussion-chat-name">{chatName}</p>
-                        <button className="delete-discussion-button" onClick={() => deleteChat(setRefreshFlag, selectId, setChatName)}>
+                        <button className="delete-button" onClick={() => deleteChat(setRefreshFlag, selectId, setChatName, setSelectedId)}>
                             <BsFillTrash3Fill color="#6141E8" size="18px"/></button>
                     </div>
                     
@@ -312,6 +320,7 @@ function ChatControl(){
                 {/*render discussions by parsing quiz JSON and passing parsed quizzes to Discussion component*/}
                 <CurrentDiscussions
                     selectId={selectId}
+                    refreshFlag={refreshFlag}
                 />
 
                 {/*input box for pdf elements*/}
