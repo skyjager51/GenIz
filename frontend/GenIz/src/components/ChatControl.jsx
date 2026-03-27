@@ -55,7 +55,7 @@ const CurrentUserChats = ({selectId, setSelectedId, setChatName, refreshFlag}) =
 }
 
 //retrieve current chat discussion(s) from db
-const CurrentDiscussions = ({selectId}) => {
+const CurrentDiscussions = ({selectId, setDiscFlag, discFlag}) => {
     const [disc_data, setDiscData] = useState([]);
     const [disc_loading, setDiscLoading] = useState(true);
 
@@ -81,7 +81,7 @@ const CurrentDiscussions = ({selectId}) => {
             }
         };
         discussionContent();
-    }, [selectId]);
+    }, [selectId, discFlag]);
 
     if(disc_loading) return<div>Loading...</div>;
     if (disc_data.length === 0) return null;
@@ -97,6 +97,7 @@ const CurrentDiscussions = ({selectId}) => {
                     id={item.discussion_id}
                     source={item.user_pdf_name}
                     quizzes={returnedQuizzes}
+                    setDiscFlag={setDiscFlag}
                 /> 
             );
         })
@@ -209,6 +210,7 @@ const deleteChat = async(setRefreshFlag, chat_id, setChatName, setSelectedId) =>
     }
 }
 
+
 function ChatControl(){
     //currently selected chat id (used by Chat item highlighting)
     const [selectId, setSelectedId] = useState(null);
@@ -230,6 +232,9 @@ function ChatControl(){
 
     //current counter state for chat refresh
     const [refreshFlag, setRefreshFlag] = useState(0);
+
+    //current counter for discussion refresh 
+    const [discFlag, setDiscFlag] = useState(0);
 
     //reusable toggle finction 
     const toggleModel = (isLocalModel) => {
@@ -320,7 +325,8 @@ function ChatControl(){
                 {/*render discussions by parsing quiz JSON and passing parsed quizzes to Discussion component*/}
                 <CurrentDiscussions
                     selectId={selectId}
-                    refreshFlag={refreshFlag}
+                    discFlag={discFlag}
+                    setDiscFlag={setDiscFlag}
                 />
 
                 {/*input box for pdf elements*/}
