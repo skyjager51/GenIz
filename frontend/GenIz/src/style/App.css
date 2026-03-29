@@ -358,13 +358,13 @@ h3:hover{
 	font-weight: bolder;
 }
 
-.delete-button{
+.button{
 	border-radius: 5px;
 	border: 1px solid #6D28D9;
 	background-color: #ffffff;
 }
 
-.delete-button:hover{
+.button:hover{
 	background-color: #e1beef;
 }
 
@@ -383,4 +383,21 @@ h3:hover{
 	padding: 15px;
 	background-color: #FDFDFF;
 
+}
+
+/*modify chat name class*/
+.modify-chat-name{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 3%;
+	border-left: 1px solid #000000;
+	padding-left: 18% ;
+}
+
+input{
+	border: 1px solid #c8ccd2;
+	border-radius: 20px;
+	padding: 5px;
 }

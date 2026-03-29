@@ -5,6 +5,7 @@ import Switch from '@mui/material/Switch'
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { PiExport } from "react-icons/pi";
 import { IoIosSend } from "react-icons/io";
+import { MdMode } from "react-icons/md";
 import axios from "axios";
 import {generate} from 'random-words'
 
@@ -164,17 +165,8 @@ const saveNewChat = async(setRefreshFlag) => {
         }
 
         if (err.response?.status === 500){
-            const paragrafo = document.querySelector('.message-input p');
+            return alert(err.response?.data?.exceptionErrorMessage);
 
-            paragrafo.textContent = err.response?.data?.exceptionErrorMessage;
-
-            function resetText(){
-                paragrafo.textContent = 'Drag the pdf file here or click to open the file exlporer';
-            };
-
-            setTimeout(resetText, 10000);
-
-            return;
         }
     }
 }
@@ -195,18 +187,29 @@ const deleteChat = async(setRefreshFlag, chat_id, setChatName, setSelectedId) =>
         }
 
         if (err.response?.status === 500){
-            const paragrafo = document.querySelector('.message-input p');
+            return alert(err.response?.data?.exceptionErrorMessage);
+        }
+    }
+}
 
-            paragrafo.textContent = err.response?.data?.exceptionErrorMessage;
+//update chat name 
+const updateChatName = async(newChatName, selectId, setChatName) => {
+    try{
+        const patchChatName = await api.patch('/database/interactions/update-chat-name',
+            {chatName : newChatName, chat_id : selectId}
+        );
+        setChatName(newChatName);
+        console.log(patchChatName);
 
-            function resetText(){
-                paragrafo.textContent = 'Drag the pdf file here or click to open the file exlporer';
-            };
-
-            setTimeout(resetText, 10000);
-
+    } catch(err) {
+       if (err.response?.status === 401){
+            window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
             return;
         }
+
+        if (err.response?.status === 500){
+            return alert(err.response?.data?.exceptionErrorMessage);
+        } 
     }
 }
 
@@ -235,6 +238,10 @@ function ChatControl(){
 
     //current counter for discussion refresh 
     const [discFlag, setDiscFlag] = useState(0);
+
+    //current state to modify chat name 
+    const [newChatName, setNewChatName] = useState("");
+    const [isModifyng, setIsModifyng] = useState(false);
 
     //reusable toggle finction 
     const toggleModel = (isLocalModel) => {
@@ -269,20 +276,18 @@ function ChatControl(){
             }
 
             if (err.response?.status === 500){
-                const paragrafo = document.querySelector('.message-input p');
-
-                paragrafo.textContent = err.response?.data?.exceptionErrorMessage;
-
-                function resetText(){
-                    paragrafo.textContent = 'Drag the pdf file here or click to open the file exlporer';
-                };
-
-                setTimeout(resetText, 10000);
-
-                return;
+                return alert(err.response?.data?.exceptionErrorMessage);
             }
         }
     };
+
+    //handle change for chat name 
+    const handleNewChatName = () => {
+        updateChatName(newChatName, selectId, setChatName);
+        setIsModifyng(false);
+        setNewChatName("");
+        setRefreshFlag(prev => prev + 1);
+    }
 
 
     return(
@@ -304,8 +309,34 @@ function ChatControl(){
                 <div className={warningOnlineModel}>
                     <div className="delete-chat-block">
                         <p className="discussion-chat-name">{chatName}</p>
-                        <button className="delete-button" onClick={() => deleteChat(setRefreshFlag, selectId, setChatName, setSelectedId)}>
+                        <button className="button" onClick={() => deleteChat(setRefreshFlag, selectId, setChatName, setSelectedId)}>
                             <BsFillTrash3Fill color="#6141E8" size="18px"/></button>
+                        
+                        {/*modify button to change chat name */}
+                        <div className="modify-chat-name-container">
+                            {!isModifyng ? (
+                                <button className="button" onClick={() => setIsModifyng(true)}>
+                                    <MdMode color="#6141E8" size="18px"/>
+                                </button>
+                            ) :
+                            (
+                                <div className="modify-chat-name">
+                                <input 
+                                    type="text" 
+                                    onChange={(e) => setNewChatName(e.target.value)}
+                                    placeholder="Write New Chat Name..."
+                                    /> 
+
+                                    <button className="button" onClick={() => handleNewChatName()}>
+                                        <IoIosSend size='18px' color="#6D28D9"/>
+                                    </button>
+                                    <button className="button" onClick={() => setIsModifyng(false)}>
+                                        <BsFillTrash3Fill color="#6141E8" size="18px"/>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                        
                     </div>
                     
 
