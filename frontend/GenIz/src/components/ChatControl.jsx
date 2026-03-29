@@ -8,6 +8,7 @@ import { IoIosSend } from "react-icons/io";
 import { MdMode } from "react-icons/md";
 import axios from "axios";
 import {generate} from 'random-words'
+import FileUploader from "./FileUploader";
 
 //create base axios api 
 //axios request to get user data
@@ -193,11 +194,12 @@ const deleteChat = async(setRefreshFlag, chat_id, setChatName, setSelectedId) =>
 }
 
 //update chat name 
-const updateChatName = async(newChatName, selectId, setChatName) => {
+const updateChatName = async(newChatName, selectId, setChatName, setRefreshFlag) => {
     try{
         const patchChatName = await api.patch('/database/interactions/update-chat-name',
             {chatName : newChatName, chat_id : selectId}
         );
+        setRefreshFlag(prev => prev + 1);
         setChatName(newChatName);
         console.log(patchChatName);
 
@@ -283,10 +285,9 @@ function ChatControl(){
 
     //handle change for chat name 
     const handleNewChatName = () => {
-        updateChatName(newChatName, selectId, setChatName);
+        updateChatName(newChatName, selectId, setChatName, setRefreshFlag);
         setIsModifyng(false);
         setNewChatName("");
-        setRefreshFlag(prev => prev + 1);
     }
 
 
@@ -363,7 +364,9 @@ function ChatControl(){
                 {/*input box for pdf elements*/}
                 <div className="message-input">
                     <button className="export-button">{<PiExport size="20px" color="#6D28D9"/>}</button>
-                    <p>Drag the pdf file here or click to open the file exlporer</p>
+                    {/* <input type="file" placeholder="Drag the pdf file here or click to open the file exlporer"/> */}
+                    {/* <p>Drag the pdf file here or click to open the file exlporer</p> */}
+                    <FileUploader></FileUploader>
                     <button className="send-button">{<IoIosSend size='25px' color="#6D28D9"/>}</button>
                 </div>
             </div>
