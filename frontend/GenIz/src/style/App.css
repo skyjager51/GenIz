@@ -401,3 +401,7 @@ input{
 	border-radius: 20px;
 	padding: 5px;
 }
+
+.input-pdf{
+	width: 50vw;
+}

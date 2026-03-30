@@ -1,21 +1,24 @@
-import React, { useState, ChangeEvent} from "react";
+import React from "react";
+import pdfToText from "react-pdftotext";
 
-function FileUploader(){
+function FileUploader({setPdfText, setPdfName}){
 
-    //current state of the file
-    const [file, setFile] = useState(null);
+    //function to extract the pdf text
+    function extractText(event){
+        const text = event.target.files[0];
 
-    //handle change in the input of the file
-    function handleChange(event){
-        if (event.target.files){
-            setFile(event.target.files[0]);
+        if(text){
+            setPdfName(text.name);
+
+            pdfToText(text)
+                .then((pdfText) => setPdfText(pdfText))
+                .catch((error) => alert('failed to extract text from pdf ' + error));            
         }
     }
 
     return(
         <div>
-            <input type="file" onChange={handleChange}/>
-            {file && (<p>Type : {file.type}</p>)}
+            <input type="file" accept="application/pdf" onChange={extractText} className="input-pdf"/>
         </div>
     );
 }

@@ -91,7 +91,9 @@ const CurrentDiscussions = ({selectId, setDiscFlag, discFlag}) => {
     return(
         disc_data.map((item) => {
             const parseQuizzes = JSON.parse(item.quiz_content);
-            const returnedQuizzes = parseQuizzes.quizzes;
+            // const returnedQuizzes = parseQuizzes.quizzes;
+            const dataRoot = parseQuizzes.llmOutput ? parseQuizzes.llmOutput : parseQuizzes;
+            const returnedQuizzes = dataRoot.quizzes || [];
 
             return(
                 <Discussion
@@ -215,6 +217,37 @@ const updateChatName = async(newChatName, selectId, setChatName, setRefreshFlag)
     }
 }
 
+//create new discussion from pdf
+const createNewDiscussion = async(pdfText, setDiscFlag, selectId, pdfName, setPdfText, setPdfName) => {
+    if (pdfText === "") return;
+    if (pdfName === "") return;
+
+    try{
+        //retrieve current model usage
+        const modelSettingResponse = await api.get('/database/interactions/retrieve-model-setting');
+
+        //generate the quiz from user text
+        const generateQuiz = await api.post('/generate-quizzes/generate',
+            {userText: pdfText, useLocalModel : modelSettingResponse.data.use_local_model}
+        )
+
+        const actualQuizJson = generateQuiz.data.llmOutput;
+
+        //save the generated quiz
+        const createDiscussion = await api.post('/database/interactions/save-new-discussion',
+            {chat_id : selectId, user_pdf_name : pdfName, quiz_content : actualQuizJson}
+        );
+        console.log(createDiscussion);
+
+        setDiscFlag(prev => prev + 1);
+        setPdfText("");
+        setPdfName("");
+
+    } catch(err) {
+        return alert(err.response?.data?.exceptionErrorMessage);
+    }
+}
+
 
 function ChatControl(){
     //currently selected chat id (used by Chat item highlighting)
@@ -244,6 +277,10 @@ function ChatControl(){
     //current state to modify chat name 
     const [newChatName, setNewChatName] = useState("");
     const [isModifyng, setIsModifyng] = useState(false);
+
+    //current state of the extracted pdf text
+    const [pdfText, setPdfText] = useState("");
+    const [pdfName, setPdfName] = useState("");
 
     //reusable toggle finction 
     const toggleModel = (isLocalModel) => {
@@ -364,10 +401,16 @@ function ChatControl(){
                 {/*input box for pdf elements*/}
                 <div className="message-input">
                     <button className="export-button">{<PiExport size="20px" color="#6D28D9"/>}</button>
-                    {/* <input type="file" placeholder="Drag the pdf file here or click to open the file exlporer"/> */}
+
                     {/* <p>Drag the pdf file here or click to open the file exlporer</p> */}
-                    <FileUploader></FileUploader>
-                    <button className="send-button">{<IoIosSend size='25px' color="#6D28D9"/>}</button>
+                    <FileUploader 
+                        setPdfText={setPdfText}
+                        setPdfName={setPdfName}
+                    />
+
+                    <button className="send-button"
+                        onClick={() => createNewDiscussion(pdfText, setDiscFlag, selectId, pdfName, setPdfText, setPdfName)}
+                    >{<IoIosSend size='24px' color="#6D28D9"/>}</button>
                 </div>
             </div>
         </div>
