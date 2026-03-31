@@ -218,11 +218,14 @@ const updateChatName = async(newChatName, selectId, setChatName, setRefreshFlag)
 }
 
 //create new discussion from pdf
-const createNewDiscussion = async(pdfText, setDiscFlag, selectId, pdfName, setPdfText, setPdfName) => {
+const createNewDiscussion = async(pdfText, setDiscFlag, selectId, pdfName, setPdfText, setPdfName, setGenerating) => {
     if (pdfText === "") return;
     if (pdfName === "") return;
 
     try{
+        //create the loading wheel
+        setGenerating(true);
+
         //retrieve current model usage
         const modelSettingResponse = await api.get('/database/interactions/retrieve-model-setting');
 
@@ -245,6 +248,9 @@ const createNewDiscussion = async(pdfText, setDiscFlag, selectId, pdfName, setPd
 
     } catch(err) {
         return alert(err.response?.data?.exceptionErrorMessage);
+
+    } finally {
+        setGenerating(false);
     }
 }
 
@@ -281,6 +287,9 @@ function ChatControl(){
     //current state of the extracted pdf text
     const [pdfText, setPdfText] = useState("");
     const [pdfName, setPdfName] = useState("");
+
+    //loading wheel state
+    const [generating, setGenerating] = useState(false);
 
     //reusable toggle finction 
     const toggleModel = (isLocalModel) => {
@@ -377,6 +386,15 @@ function ChatControl(){
                         
                     </div>
                     
+                    {/*loading wheel to indicate the processing of the pdf content*/}
+                    <div className="loading">
+                        {
+                            generating ?
+                            (<div className="loading-wheel"></div>) :
+                            (<div></div>)
+                        }
+                        
+                    </div>
 
                     <div className="switch-button">
                         <p className={onlineModelStyle}>Online Model</p>
@@ -409,7 +427,7 @@ function ChatControl(){
                     />
 
                     <button className="send-button"
-                        onClick={() => createNewDiscussion(pdfText, setDiscFlag, selectId, pdfName, setPdfText, setPdfName)}
+                        onClick={() => createNewDiscussion(pdfText, setDiscFlag, selectId, pdfName, setPdfText, setPdfName, setGenerating)}
                     >{<IoIosSend size='24px' color="#6D28D9"/>}</button>
                 </div>
             </div>

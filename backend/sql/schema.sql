@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS chats(
 -- Table for discussions 
 CREATE TABLE IF NOT EXISTS discussions(
     discussion_id INT NOT NULL AUTO_INCREMENT,
-    user_pdf_name VARCHAR(60),
+    user_pdf_name VARCHAR(100),
     quiz_content TEXT NOT NULL,
     chat_id INT NOT NULL,
     PRIMARY KEY (discussion_id),

@@ -405,3 +405,20 @@ input{
 .input-pdf{
 	width: 50vw;
 }
+
+.loading-wheel{
+	background-color: #ffdd00;
+	width: 30px;
+	height: 30px;
+	animation: spin 1.5s linear infinite;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@keyframes spin {
+	from{}
+	to{
+		transform: rotate(360deg);
+	}
+}
