@@ -422,3 +422,8 @@ input{
 		transform: rotate(360deg);
 	}
 }
+
+.policy-text{
+	height: 90vh;
+	overflow-y: auto;
+}
