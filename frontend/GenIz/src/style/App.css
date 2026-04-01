@@ -409,23 +409,6 @@ input{
 	width: 50vw;
 }
 
-.loading-wheel{
-	background-color: #ffdd00;
-	width: 30px;
-	height: 30px;
-	animation: spin 1.5s linear infinite;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-@keyframes spin {
-	from{}
-	to{
-		transform: rotate(360deg);
-	}
-}
-
 .policy-text{
 	height: 90vh;
 	overflow-y: auto;
@@ -436,10 +419,36 @@ input{
 	width: 40%;
 	margin-left: 30%;
 	margin-right: 30%;
-	border: 1px solid #e5e5e5;
-	box-shadow: 0 0 30px 5px rgb(201, 201, 201);
+	border: 1px solid #dde1e7;
+	background-color: #ffffff;
 	border-radius: 5px;
 	display: flex;
 	flex-direction: column;
 	margin-top: auto;
+}
+
+.arc {
+  --b: 5px; /* the boder thickness */
+  --a: 240deg; /* control the progression */
+  
+  width: 25px;
+  aspect-ratio: 1;
+  padding: var(--b);
+  border-radius: 50%;
+  background: #ffdd00;
+  --_g:/var(--b) var(--b) no-repeat
+    radial-gradient(50% 50%,#000 97%,#0000);
+  mask: top var(--_g),
+    calc(50% + 50%*sin(var(--a))) 
+    calc(50% - 50%*cos(var(--a))) var(--_g),
+    linear-gradient(#0000 0 0) content-box intersect,
+    conic-gradient(#000 var(--a),#0000 0);
+	animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+	from{}
+	to{
+		transform: rotate(360deg);
+	}
 }

@@ -146,10 +146,9 @@ function ChatControl(){
                     <div className="loading">
                         {
                             generating ?
-                            (<div className="loading-wheel"></div>) :
+                            (<div class="arc"></div>) :
                             (<div></div>)
                         }
-                        
                     </div>
 
                     <div className="switch-button">
