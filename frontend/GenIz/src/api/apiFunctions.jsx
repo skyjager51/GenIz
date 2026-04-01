@@ -250,4 +250,17 @@ export const genizApiCalls = {
             setGenerating(false);
         }
     },
+
+    logout : async() => {
+        try{
+            const response = await api.get('http://localhost:8080/logout');
+            console.log(response);
+            window.location.reload();
+            
+        } catch(err) {
+            if (err.response?.status === 500){
+                return alert(err.response?.data?.exceptionErrorMessage);
+            } 
+        }
+    },
 }

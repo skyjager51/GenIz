@@ -3,6 +3,7 @@ import {Routes, Route, Link} from "react-router-dom";
 import geniz_logo from "../assets/geniz_logo.png";
 import axios from 'axios';
 
+
 //axios request to get user data
 const api = axios.create({
     baseURL: 'http://localhost:8080',
@@ -61,7 +62,7 @@ function Header(){
                     <ul className="routes">
                         <Link to={'/Home'}> <li>Home</li> </Link>
                         <Link to={'/Guide'}> <li>Guide</li> </Link>
-                        <Link to={'/Privacy-Policy'}> <li>Privacy</li></Link>
+                        <Link to={'/Privacy-Policy'}> <li>Privacy</li></Link> 
                     </ul>
                 </div>
             </div>

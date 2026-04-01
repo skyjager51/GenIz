@@ -35,11 +35,16 @@ public class SecurityConfig {
 
         //logout config, by hitting baseUrl/logout the user gets redirected to a default logout page.
         .logout(logout -> {
-            logout.logoutSuccessUrl("/")
-            .permitAll();
+            logout.logoutSuccessUrl("http://localhost:5173/")
+            .permitAll()
+            .logoutSuccessHandler((request, response, authentication) -> {
+                response.setStatus(HttpServletResponse.SC_OK);
+            });
         })
+
         .csrf(csrf -> csrf.disable())
 
+        //allow home page of GenIz to perform api calls 
         .cors(cors -> cors.configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedOrigins(List.of("http://localhost:5173/"));

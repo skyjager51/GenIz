@@ -103,6 +103,9 @@ function ChatControl(){
                     setChatName={setChatName}
                     refreshFlag={refreshFlag}
                 />
+
+                {/* button to logout the current user account */}
+                <button type="submit" onClick={genizApiCalls.logout} className="logout-button">Logout</button> 
             </div>
 
             <div className="discussion-list">
