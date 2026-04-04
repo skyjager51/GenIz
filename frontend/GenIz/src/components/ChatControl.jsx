@@ -8,7 +8,7 @@ import { genizApiCalls } from "../api/apiFunctions";
 import { CurrentUserChats, CurrentDiscussions, CurrentModelUsageType } from "../api/apiComponents";
 import api from "../api/apiClient";
 
-function ChatControl(){
+function ChatControl({setErrorMessage, setErrorText}){
     //currently selected chat id (used by Chat item highlighting)
     const [selectId, setSelectedId] = useState(null);
 
@@ -112,7 +112,7 @@ function ChatControl(){
                 <div className={warningOnlineModel}>
                     <div className="delete-chat-block">
                         <p className="discussion-chat-name">{chatName}</p>
-                        <button className="button" onClick={() => genizApiCalls.deleteChat(setRefreshFlag, selectId, setChatName, setSelectedId)}>
+                        <button className="button" onClick={() => genizApiCalls.deleteChat(setRefreshFlag, selectId, setChatName, setSelectedId, setErrorMessage, setErrorText)}>
                             <BsFillTrash3Fill color="#6141E8" size="18px"/></button>
                         
                         {/*modify button to change chat name */}
@@ -173,7 +173,8 @@ function ChatControl(){
 
                 {/*input box for pdf elements*/}
                 <div className="message-input">
-                    <button className="export-button">{<PiExport size="20px" color="#6D28D9"/>}</button>
+                    <button className="export-button" onClick={() => genizApiCalls.exportTxt(selectId)}>
+                    {<PiExport size="20px" color="#6D28D9"/>}</button>
 
                     {/* <p>Drag the pdf file here or click to open the file exlporer</p> */}
                     <FileUploader 

@@ -4,6 +4,7 @@ import {generate} from 'random-words'
 import Switch from '@mui/material/Switch'
 import Chat from "../components/Chat";
 import Discussion from "../components/Discussion";
+import ErrorMessage from "../components/ErrorMessage";
 
 export const genizApiCalls = {
 
@@ -159,13 +160,12 @@ export const genizApiCalls = {
     
             if (err.response?.status === 500){
                 return alert(err.response?.data?.exceptionErrorMessage);
-    
             }
         }
     },
     
     //delete current chat
-    deleteChat : async(setRefreshFlag, chat_id, setChatName, setSelectedId) => {
+    deleteChat : async(setRefreshFlag, chat_id, setChatName, setSelectedId, setErrorMessage, setErrorText) => {
         try{
             const deletedChat = await api.delete('/database/interactions/delete-chat/' + chat_id);
             console.log(deletedChat);
@@ -180,7 +180,13 @@ export const genizApiCalls = {
             }
     
             if (err.response?.status === 500){
-                return alert(err.response?.data?.exceptionErrorMessage);
+                // return alert(err.response?.data?.exceptionErrorMessage);
+                setErrorMessage(true);
+                setErrorText(err.response?.data?.exceptionErrorMessage);
+
+                setTimeout(() => {
+                    setErrorMessage(false);
+                }, 3000);
             }
         }
     },
@@ -263,4 +269,14 @@ export const genizApiCalls = {
             } 
         }
     },
+
+    exportTxt : async(selectId) => {
+        try{
+            const exportData = await api.post('/export/createFile/' + selectId);
+            console.log(exportData);
+
+        } catch(err) {
+            return alert(err.response?.data?.exceptionErrorMessage);
+        }
+    }
 }
