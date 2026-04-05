@@ -86,7 +86,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
                     .build();
     
             } catch (URISyntaxException e) {
-                throw new RuntimeException("something went wrong with the model url", e);
+                throw new RuntimeException("Something went wrong with the model url", e);
             } 
 
         } else {
@@ -98,7 +98,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
                     .build();
     
             } catch (URISyntaxException e) {
-                throw new RuntimeException("something went wrong with the model url", e);
+                throw new RuntimeException("Something went wrong with the model url", e);
             } 
         }
 
@@ -120,7 +120,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
              convertResponse.getUsage().getTotal_tokens());
 
         } catch (IOException | InterruptedException | JsonSyntaxException e){
-            throw new RuntimeException("something went wrong when calling the llm model or with the model response format", e);
+            throw new RuntimeException("Something went wrong when calling the llm model or with the model response format", e);
         }
     }    
 

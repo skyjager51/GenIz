@@ -7,6 +7,7 @@ import FileUploader from "./FileUploader";
 import { genizApiCalls } from "../api/apiFunctions";
 import { CurrentUserChats, CurrentDiscussions, CurrentModelUsageType } from "../api/apiComponents";
 import api from "../api/apiClient";
+import wrapdefaultActions from "../api/errorHelperFunction";
 
 function ChatControl({setErrorMessage, setErrorText}){
     //currently selected chat id (used by Chat item highlighting)
@@ -77,14 +78,14 @@ function ChatControl({setErrorMessage, setErrorText}){
             }
 
             if (err.response?.status === 500){
-                return alert(err.response?.data?.exceptionErrorMessage);
+                wrapdefaultActions(setErrorMessage, setErrorText, err);
             }
         }
     };
 
     //handle change for chat name 
     const handleNewChatName = () => {
-        genizApiCalls.updateChatName(newChatName, selectId, setChatName, setRefreshFlag);
+        genizApiCalls.updateChatName(newChatName, selectId, setChatName, setRefreshFlag, setErrorMessage, setErrorText);
         setIsModifyng(false);
         setNewChatName("");
     }
@@ -93,7 +94,7 @@ function ChatControl({setErrorMessage, setErrorText}){
     return(
         <div className="chat-discussion-panel">
             <div className="chat-list">
-                <button className="add-chat" onClick={() => genizApiCalls.saveNewChat(setRefreshFlag)}>New Chat</button>
+                <button className="add-chat" onClick={() => genizApiCalls.saveNewChat(setRefreshFlag, setErrorMessage, setErrorText)}>New Chat</button>
                 <p id="chats-lable">Chats</p>
                 
                 {/*render the left chat list; each Chat component handles selection*/}
@@ -105,7 +106,7 @@ function ChatControl({setErrorMessage, setErrorText}){
                 />
 
                 {/* button to logout the current user account */}
-                <button type="submit" onClick={genizApiCalls.logout} className="logout-button">Logout</button> 
+                <button type="submit" onClick={()=>genizApiCalls.logout(setErrorMessage, setErrorText)} className="logout-button">Logout</button> 
             </div>
 
             <div className="discussion-list">
@@ -173,7 +174,7 @@ function ChatControl({setErrorMessage, setErrorText}){
 
                 {/*input box for pdf elements*/}
                 <div className="message-input">
-                    <button className="export-button" onClick={() => genizApiCalls.exportTxt(selectId)}>
+                    <button className="export-button" onClick={() => genizApiCalls.exportTxt(selectId, setErrorMessage, setErrorText)}>
                     {<PiExport size="20px" color="#6D28D9"/>}</button>
 
                     {/* <p>Drag the pdf file here or click to open the file exlporer</p> */}
@@ -183,7 +184,7 @@ function ChatControl({setErrorMessage, setErrorText}){
                     />
 
                     <button className="send-button"
-                        onClick={() => genizApiCalls.createNewDiscussion(pdfText, setDiscFlag, selectId, pdfName, setPdfText, setPdfName, setGenerating)}
+                        onClick={() => genizApiCalls.createNewDiscussion(pdfText, setDiscFlag, selectId, pdfName, setPdfText, setPdfName, setGenerating, setErrorMessage, setErrorText)}
                     >{<IoIosSend size='24px' color="#6D28D9"/>}</button>
                 </div>
             </div>

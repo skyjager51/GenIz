@@ -5,6 +5,7 @@ import Switch from '@mui/material/Switch'
 import Chat from "../components/Chat";
 import Discussion from "../components/Discussion";
 import ErrorMessage from "../components/ErrorMessage";
+import wrapdefaultActions from "./errorHelperFunction";
 
 export const genizApiCalls = {
 
@@ -144,7 +145,7 @@ export const genizApiCalls = {
     },
     
     //create new chat
-    saveNewChat : async(setRefreshFlag) => {
+    saveNewChat : async(setRefreshFlag, setErrorMessage, setErrorText) => {
         try{
             const createChat = await api.post('/database/interactions/save-new-chat',
                 {chatName : 'New Chat ' + generate({ minLength: 3, maxLength: 8 })}
@@ -159,7 +160,7 @@ export const genizApiCalls = {
             }
     
             if (err.response?.status === 500){
-                return alert(err.response?.data?.exceptionErrorMessage);
+                wrapdefaultActions(setErrorMessage, setErrorText, err);
             }
         }
     },
@@ -180,19 +181,13 @@ export const genizApiCalls = {
             }
     
             if (err.response?.status === 500){
-                // return alert(err.response?.data?.exceptionErrorMessage);
-                setErrorMessage(true);
-                setErrorText(err.response?.data?.exceptionErrorMessage);
-
-                setTimeout(() => {
-                    setErrorMessage(false);
-                }, 3000);
+                wrapdefaultActions(setErrorMessage, setErrorText, err);
             }
         }
     },
     
     //update chat name 
-    updateChatName : async(newChatName, selectId, setChatName, setRefreshFlag) => {
+    updateChatName : async(newChatName, selectId, setChatName, setRefreshFlag, setErrorMessage, setErrorText) => {
         try{
             const patchChatName = await api.patch('/database/interactions/update-chat-name',
                 {chatName : newChatName, chat_id : selectId}
@@ -208,13 +203,13 @@ export const genizApiCalls = {
             }
     
             if (err.response?.status === 500){
-                return alert(err.response?.data?.exceptionErrorMessage);
+                wrapdefaultActions(setErrorMessage, setErrorText, err);
             } 
         }
     },
     
     //create new discussion from pdf
-    createNewDiscussion : async(pdfText, setDiscFlag, selectId, pdfName, setPdfText, setPdfName, setGenerating) => {
+    createNewDiscussion : async(pdfText, setDiscFlag, selectId, pdfName, setPdfText, setPdfName, setGenerating, setErrorMessage, setErrorText) => {
         if (pdfText === "") return;
         if (pdfName === "") return;
     
@@ -249,7 +244,7 @@ export const genizApiCalls = {
             }
     
             if (err.response?.status === 500){
-                return alert(err.response?.data?.exceptionErrorMessage);
+                wrapdefaultActions(setErrorMessage, setErrorText, err);
             } 
     
         } finally {
@@ -257,7 +252,7 @@ export const genizApiCalls = {
         }
     },
 
-    logout : async() => {
+    logout : async(setErrorMessage, setErrorText) => {
         try{
             const response = await api.get('http://localhost:8080/logout');
             console.log(response);
@@ -265,18 +260,18 @@ export const genizApiCalls = {
             
         } catch(err) {
             if (err.response?.status === 500){
-                return alert(err.response?.data?.exceptionErrorMessage);
+                wrapdefaultActions(setErrorMessage, setErrorText, err);
             } 
         }
     },
 
-    exportTxt : async(selectId) => {
+    exportTxt : async(selectId, setErrorMessage, setErrorText) => {
         try{
             const exportData = await api.post('/export/createFile/' + selectId);
             console.log(exportData);
 
         } catch(err) {
-            return alert(err.response?.data?.exceptionErrorMessage);
+            wrapdefaultActions(setErrorMessage, setErrorText, err);
         }
     }
 }

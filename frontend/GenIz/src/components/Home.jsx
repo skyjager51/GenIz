@@ -4,7 +4,7 @@ import ErrorMessage from "./ErrorMessage";
 
 function Home(){
     //state for the error message
-    const [errormessage, setErrorMessage] = useState(true);
+    const [errormessage, setErrorMessage] = useState(false);
     const [errorText, setErrorText] = useState('');
 
     // Home page renders main chat control panel
