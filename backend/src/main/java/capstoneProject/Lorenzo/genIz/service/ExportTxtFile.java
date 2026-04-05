@@ -77,7 +77,7 @@ public class ExportTxtFile implements ExportQuizToLocalMachine{
                 writer.write(quiz);
             }
         } catch (IOException e){
-            throw new RuntimeException("the txt creation failed");
+            throw new RuntimeException("The txt file creation failed, please try again.");
         }
     }
 

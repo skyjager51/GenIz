@@ -14,7 +14,7 @@ function Chat({name, isSelected, onSelect, id, chatSelect}){
     return(
         <div className={currentClass} onClick={() =>{onSelect(); chatSelect();}}>
             <FiFileText></FiFileText>
-            <p> <span>{name}</span> </p>
+            <p className="chat-name"> <span>{name}</span> </p>
             <IoIosArrowForward></IoIosArrowForward>
         </div>
     );

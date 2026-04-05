@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import capstoneProject.Lorenzo.genIz.DTO.ErrorResponseDto;
 import jakarta.persistence.NoResultException;
@@ -30,9 +31,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handleUnexpected(Exception ex) {
-        ErrorResponseDto error = new ErrorResponseDto("An unexpected error occurred. Please try again later.");
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponseDto> handleUnexpected(MethodArgumentTypeMismatchException ex) {
+        ErrorResponseDto error = new ErrorResponseDto("The argument passed is not correct.");
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    
+    // @ExceptionHandler(Exception.class)
+    // public ResponseEntity<ErrorResponseDto> handleUnexpected(Exception ex) {
+    //     ErrorResponseDto error = new ErrorResponseDto("An unexpected error occurred. Please try again later.");
+    //     return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
 }
