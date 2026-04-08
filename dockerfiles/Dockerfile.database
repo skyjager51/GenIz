@@ -1,0 +1,13 @@
+#use base mysql image
+FROM mysql:9.5.0
+
+#expose mysql db port 
+EXPOSE 3306
+
+#copy the default sql schema of GenIz for db initialization
+COPY /backend/sql/schema.sql /docker-entrypoint.initdb.d/
+
+#the default CMD command of the mysql image is used 
+
+#to build the image, navigate to the GenIz folder and type:
+#docker image build -t geniz-db -f ./dockerfiles/Dockerfile.database .
