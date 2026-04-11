@@ -3,7 +3,7 @@
 services:
   #creating db service
   database:
-    image: datab-try
+    image: lorenzofaccio/datab-arm:0.0.1
     ports:
       - "3306:3306"
     volumes:
@@ -22,7 +22,7 @@ services:
 
   #creating backend instance
   backend:
-    image: backend-try
+    image: lorenzofaccio/backend-arm:0.0.1
     ports:
       - "24987:8080"
 
@@ -55,7 +55,7 @@ services:
 
   #define frontend services 
   frontend: 
-    image: frontend-try
+    image: lorenzofaccio/frontend-arm:0.0.1
     ports: 
      - "24991:5173"
 

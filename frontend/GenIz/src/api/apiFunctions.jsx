@@ -270,6 +270,18 @@ export const genizApiCalls = {
             const exportData = await api.post('/export/createFile/' + selectId);
             console.log(exportData);
 
+            if(exportData.status === 200){
+                const button = document.getElementsByClassName('export-button')[0];
+            
+                if (button) {
+                    button.style.backgroundColor = 'green'; 
+
+                    setTimeout(() => {
+                        button.style.backgroundColor = '#F7F8FE';
+                    }, 3000);
+                }
+            }
+
         } catch(err) {
             wrapdefaultActions(setErrorMessage, setErrorText, err);
         }
