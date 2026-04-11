@@ -21,7 +21,7 @@ export const genizApiCalls = {
                     setData(response.data);
                 } catch (err) {
                     if (err.response?.status === 401){
-                        window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                        window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
                         return;
                     }
                 } finally {
@@ -67,7 +67,7 @@ export const genizApiCalls = {
     
                 } catch (err) {
                     if (err.response?.status === 401){
-                        window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                        window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
                         return;
                     }
                 } finally {
@@ -114,7 +114,7 @@ export const genizApiCalls = {
                     toggleModel(modelSettingResponse.data.use_local_model);
                 } catch (err) {
                     if (err.response?.status === 401){
-                        window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                        window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
                         return;
                     }
                 } finally {
@@ -155,7 +155,7 @@ export const genizApiCalls = {
     
         } catch(err) {
             if (err.response?.status === 401){
-                window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
                 return;
             }
     
@@ -176,7 +176,7 @@ export const genizApiCalls = {
     
         } catch(err) {
             if (err.response?.status === 401){
-                window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
                 return;
             }
     
@@ -198,7 +198,7 @@ export const genizApiCalls = {
     
         } catch(err) {
            if (err.response?.status === 401){
-                window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
                 return;
             }
     
@@ -239,7 +239,7 @@ export const genizApiCalls = {
     
         } catch(err) {
             if (err.response?.status === 401){
-                window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
                 return;
             }
     
@@ -254,7 +254,7 @@ export const genizApiCalls = {
 
     logout : async(setErrorMessage, setErrorText) => {
         try{
-            const response = await api.get('http://localhost:8080/logout');
+            const response = await api.get('http://localhost:24987/logout');
             console.log(response);
             window.location.reload();
             
@@ -269,6 +269,18 @@ export const genizApiCalls = {
         try{
             const exportData = await api.post('/export/createFile/' + selectId);
             console.log(exportData);
+
+            if(exportData.status === 200){
+                const button = document.getElementsByClassName('export-button')[0];
+            
+                if (button) {
+                    button.style.backgroundColor = 'green'; 
+
+                    setTimeout(() => {
+                        button.style.backgroundColor = '#F7F8FE';
+                    }, 3000);
+                }
+            }
 
         } catch(err) {
             wrapdefaultActions(setErrorMessage, setErrorText, err);

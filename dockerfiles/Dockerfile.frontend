@@ -1,0 +1,21 @@
+#use existing node ready container image
+FROM node:25.8.0-alpine
+
+#create working directory
+WORKDIR /usr/app
+
+#copy dependency files
+COPY ./frontend/GenIz/package.json /usr/app/
+COPY ./frontend/GenIz/package-lock.json /usr/app/
+
+#install project dependencies
+RUN npm install
+
+#copy project files
+COPY ./frontend/GenIz/ /usr/app/
+
+#expose project port 
+EXPOSE 5173
+
+#run the react app
+CMD [ "npm", "run", "dev", "--", "--host", "0.0.0.0" ]

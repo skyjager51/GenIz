@@ -1,0 +1,70 @@
+#creating docker compose file to programmatically start all containers in the same network and perfrom health checks
+
+services:
+  #creating db service
+  database:
+    image: lorenzofaccio/datab-arm:0.0.1
+    ports:
+      - "3306:3306"
+    volumes:
+      - geniz-data:/var/lib/mysql
+
+    #setup healthcheck to prevent backend to start before db
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 3s
+      retries: 10
+
+    #setup env variables for the db
+    environment:
+      MYSQL_ROOT_PASSWORD: sample_passw!345
+
+
+  #creating backend instance
+  backend:
+    image: lorenzofaccio/backend-arm:0.0.1
+    ports:
+      - "24987:8080"
+
+    #specify bond mounts for exported txts
+    volumes: 
+      - ${HOME}/GenIz_txt:/exported_quizzes
+
+    #defining local model
+    models:
+      - llm
+
+    environment:
+      MODEL_URL: 'http://model-runner.docker.internal/v1/chat/completions'
+      LLM_MODEL: 'ai/qwen2.5:3B-Q4_K_M'
+      EXTERNAL_MODEL_NAME: 'gemini-2.5-flash'
+      EXTERNAL_MODEL_URL: 'https://generativelanguage.googleapis.com/v1beta/openai/v1/chat/completions'
+      EXTERNAL_MODEL_API_KEY: 'none'
+      DB_URL: jdbc:mysql://database:3306/geniz
+      DB_PASSWORD: sample_passw!345
+      DB_USER: root
+
+      #setting up env to tell spring security to communicate with Auth0 as localhost:24978 instead of 8080 (internal port)
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_AUTH0_REDIRECT_URI: "http://localhost:24987/login/oauth2/code/auth0"
+      SERVER_FORWARD_HEADERS_STRATEGY: native
+
+    depends_on:
+      database:
+        condition: service_healthy
+
+
+  #define frontend services 
+  frontend: 
+    image: lorenzofaccio/frontend-arm:0.0.1
+    ports: 
+     - "24991:5173"
+
+#define local model and model contex size
+models:
+    llm:
+      model: ai/qwen2.5:3B-Q4_K_M
+      context_size: 4096
+
+#specify volumes
+volumes:
+  geniz-data:

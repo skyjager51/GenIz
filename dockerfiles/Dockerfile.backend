@@ -1,0 +1,24 @@
+#ubuntu environment to use jdk17
+FROM eclipse-temurin:17-jdk-jammy
+
+#setting the port on which the application inside the container expect traffic 
+EXPOSE 8080
+
+#install tini for graceful software shudown and zombie processes management
+RUN apt-get update && apt-get install -y tini
+
+#create the working directory for the application 
+WORKDIR /usr/src/app
+
+#copy the .jar file inside the working directory 
+COPY ./backend/target/genIz-0.0.1-SNAPSHOT.jar genIz-0.0.1-SNAPSHOT.jar
+
+#create the bind mount folder where the file are going to be saved
+# Create the directory at the root and give the app permission to write to it
+RUN mkdir -p /exported_quizzes && chmod 777 /exported_quizzes
+
+#starting the application 
+CMD [ "/usr/bin/tini", "--", "java", "-jar", "genIz-0.0.1-SNAPSHOT.jar" ]
+
+#to run the container, in the root folder fo the GenIz project run:
+#docker image build -t genIz-backend -f dockerfiles/Dockerfile.backend .

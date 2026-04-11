@@ -21,7 +21,7 @@ import capstoneProject.Lorenzo.genIz.api_format.response.ApiCallResponse;
 public class GenerateQuizApi implements GenerateQuizApiInterface{
 
     //injecting info from .env file 
-    @Value("${MODEL_NAME}")
+    @Value("${LLM_MODEL}")
     private String modelName;
 
     @Value("${MODEL_URL}")
