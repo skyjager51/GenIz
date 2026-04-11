@@ -35,7 +35,7 @@ services:
       - llm
 
     environment:
-      LLM_URL: 'http://model-runner.docker.internal/v1/chat/completions'
+      MODEL_URL: 'http://model-runner.docker.internal/v1/chat/completions'
       LLM_MODEL: 'ai/qwen2.5:3B-Q4_K_M'
       EXTERNAL_MODEL_NAME: 'gemini-2.5-flash'
       EXTERNAL_MODEL_URL: 'https://generativelanguage.googleapis.com/v1beta/openai/v1/chat/completions'

@@ -24,7 +24,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
     @Value("${LLM_MODEL}")
     private String modelName;
 
-    @Value("${LLM_URL}")
+    @Value("${MODEL_URL}")
     private String modelUrl;
 
     @Value("${EXTERNAL_MODEL_API_KEY}")
