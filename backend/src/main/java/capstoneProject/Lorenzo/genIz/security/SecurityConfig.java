@@ -29,13 +29,13 @@ public class SecurityConfig {
             }))
 
         //when user successfully loging, redirect to frontend home
-        .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:5173/", true))
+        .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:24991/", true))
 
         .formLogin(Customizer.withDefaults())
 
         //logout config, by hitting baseUrl/logout the user gets redirected to a default logout page.
         .logout(logout -> {
-            logout.logoutSuccessUrl("http://localhost:5173/")
+            logout.logoutSuccessUrl("http://localhost:24991/")
             .permitAll()
             .logoutSuccessHandler((request, response, authentication) -> {
                 response.setStatus(HttpServletResponse.SC_OK);
@@ -47,7 +47,7 @@ public class SecurityConfig {
         //allow home page of GenIz to perform api calls 
         .cors(cors -> cors.configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(List.of("http://localhost:5173/"));
+            config.setAllowedOrigins(List.of("http://localhost:24991/"));
             config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
             config.setAllowedHeaders(List.of("*"));
             config.setAllowCredentials(true);

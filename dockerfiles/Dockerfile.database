@@ -5,7 +5,7 @@ FROM mysql:9.5.0
 EXPOSE 3306
 
 #copy the default sql schema of GenIz for db initialization
-COPY /backend/sql/schema.sql /docker-entrypoint.initdb.d/
+COPY /backend/sql/schema.sql /docker-entrypoint-initdb.d/
 
 #the default CMD command of the mysql image is used 
 
