@@ -1,13 +1,6 @@
 import React from "react";
 import { BsFillTrash3Fill } from "react-icons/bs";
-import axios from "axios";
-
-//create base axios api 
-//axios request to get user data
-const api = axios.create({
-    baseURL: 'http://localhost:8080',
-    withCredentials: true
-});
+import api from "../api/apiClient";
 
 //delete selected discussion 
 const deleteDiscussion = async(discussion_id, setDiscFlag) => {
@@ -18,7 +11,7 @@ const deleteDiscussion = async(discussion_id, setDiscFlag) => {
 
     } catch (err) {
         if (err.response?.status === 401){
-            window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+            window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
             return;
         }
 

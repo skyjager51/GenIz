@@ -55,7 +55,7 @@ services:
 
   #define frontend services 
   frontend: 
-    image: lorenzofaccio/frontend-arm:0.0.1
+    image: lorenzofaccio/frontend-arm:0.0.2
     ports: 
      - "24991:5173"
 
