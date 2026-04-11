@@ -28,7 +28,7 @@ services:
 
     #specify bond mounts for exported txts
     volumes: 
-      - ${HOME}/GenIz_txt:/exported_quizzes
+      - ~/GenIz_txt:/exported_quizzes
 
     #defining local model
     models:
