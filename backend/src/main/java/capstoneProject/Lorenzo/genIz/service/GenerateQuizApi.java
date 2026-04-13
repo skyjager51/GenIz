@@ -14,11 +14,20 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import capstoneProject.Lorenzo.genIz.DTO.ResponseDataDto;
+import capstoneProject.Lorenzo.genIz.DTO.response_dto.ResponseOnlineModelDto;
 import capstoneProject.Lorenzo.genIz.api_format.request.ApiCallRequest;
 import capstoneProject.Lorenzo.genIz.api_format.response.ApiCallResponse;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class GenerateQuizApi implements GenerateQuizApiInterface{
+
+    //injcet database service to obtain online model data
+    QuizDaoService quizDaoService;
+
+    public GenerateQuizApi(QuizDaoService quizDaoService){
+        this.quizDaoService = quizDaoService;
+    }
 
     //injecting info from .env file 
     @Value("${LLM_MODEL}")
@@ -27,14 +36,22 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
     @Value("${MODEL_URL}")
     private String modelUrl;
 
-    @Value("${EXTERNAL_MODEL_API_KEY}")
-    private String modelApiKey;
+    // @Value("${EXTERNAL_MODEL_API_KEY}")
+    // private String modelApiKey;
 
-    @Value("${EXTERNAL_MODEL_NAME}")
-    private String extModelName;
+    // @Value("${EXTERNAL_MODEL_NAME}")
+    // private String extModelName;
 
-    @Value("${EXTERNAL_MODEL_URL}")
-    private String extModelUrl;
+    // @Value("${EXTERNAL_MODEL_URL}")
+    // private String extModelUrl;
+
+    private ResponseOnlineModelDto responseOnlineModelDto;
+    
+    //populate the DTO after class initialization (neede because quizDaoService must be created before this query)
+    @PostConstruct
+    private void retrieveOnlineModelSettings(){
+        responseOnlineModelDto = quizDaoService.retrieveOnlineModelSettings();
+    } 
 
     //initializing the HTTP client
     HttpClient httpClient = HttpClient.newHttpClient();
@@ -50,7 +67,7 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
         //creating the api body 
         ApiCallRequest apiCallRequest = new ApiCallRequest();
         if(!useLocalModel){
-            apiCallRequest.setModel(extModelName);
+            apiCallRequest.setModel(responseOnlineModelDto.getModel_name());
         } else {
             apiCallRequest.setModel(modelName);
         }
@@ -79,9 +96,9 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
         if(!useLocalModel){
             try {
                 httpRequest = HttpRequest.newBuilder()
-                    .uri(new URI(extModelUrl))
+                    .uri(new URI(responseOnlineModelDto.getModel_url()))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + modelApiKey)
+                    .header("Authorization", "Bearer " + responseOnlineModelDto.getApi_key())
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
     

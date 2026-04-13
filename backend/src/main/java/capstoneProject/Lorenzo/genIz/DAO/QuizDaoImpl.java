@@ -14,8 +14,11 @@ import capstoneProject.Lorenzo.genIz.DTO.entity_dto.UserDataDTO;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqChatDto;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqDiscussionDto;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqModelSetting;
+import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqOnlineModelDto;
+import capstoneProject.Lorenzo.genIz.DTO.response_dto.ResponseOnlineModelDto;
 import capstoneProject.Lorenzo.genIz.entity.ChatEntity;
 import capstoneProject.Lorenzo.genIz.entity.DiscussionEntity;
+import capstoneProject.Lorenzo.genIz.entity.OnlineModelEntity;
 import capstoneProject.Lorenzo.genIz.entity.UserEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -347,6 +350,62 @@ public class QuizDaoImpl implements QuizDaoInterface{
             throw new AccessDeniedException("user not authorized to access this discussion");
         }
         
+    }
+
+    @Override
+    @Transactional
+    public void saveNewOnlineModelSettings(PostReqOnlineModelDto postReqOnlineModelDto) {
+
+        //no control over current user because online model is shared across all users on the same machine 
+        
+        //retrieve current values 
+        OnlineModelEntity currentValues = entityManager.find(OnlineModelEntity.class, 1);
+
+        //check what has been modified and update it 
+        if(postReqOnlineModelDto.getModel_url() != null || postReqOnlineModelDto.getModel_url() != ""){
+            currentValues.setModelUrl(postReqOnlineModelDto.getModel_url());
+        }
+
+        if(postReqOnlineModelDto.getModel_name() != null || postReqOnlineModelDto.getModel_name() != ""){
+            currentValues.setModelName(postReqOnlineModelDto.getModel_name());
+        }
+
+        if(postReqOnlineModelDto.getApi_key() != null || postReqOnlineModelDto.getApi_key() != ""){
+            currentValues.setApiKey(postReqOnlineModelDto.getApi_key());
+        }
+
+        //merge the changes
+        entityManager.merge(currentValues);
+    }
+
+    @Override
+    public ResponseOnlineModelDto retrieveOnlineModelSettings() {
+
+        //no control over current user because online model is shared across all users on the same machine
+
+        //retrieve current model settings
+        OnlineModelEntity currentValues = entityManager.find(OnlineModelEntity.class, 1);
+
+        //map the DTO
+        ResponseOnlineModelDto responseOnlineModelDto = new ResponseOnlineModelDto();
+        responseOnlineModelDto.setModel_url(currentValues.getModelUrl());
+        responseOnlineModelDto.setModel_name(currentValues.getModelName());
+        responseOnlineModelDto.setApi_key(currentValues.getApiKey());
+
+        return responseOnlineModelDto;
+    }
+
+    @Override
+    @Transactional
+    public void deleteOnlineModelSettings() {
+        
+        //no control over current user because online model is shared across all users on the same machine
+
+        //retrieve current model settings 
+        OnlineModelEntity currentValues = entityManager.find(OnlineModelEntity.class, 1);
+
+        //delete current model settings
+        entityManager.remove(currentValues);
     }
 
 }

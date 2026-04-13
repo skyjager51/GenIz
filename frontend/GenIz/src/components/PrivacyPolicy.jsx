@@ -96,7 +96,9 @@ function PrivacyPolicy(){
                     {subtitle: "12. Changes to This Policy", content: `This privacy policy may be updated from time to time.
 
                         Users are encouraged to review it periodically.`},
-                    {subtitle: "13. Contact", content: `For questions, issues, or concerns, please use the official GitHub repository of the project.`}
+                    {subtitle: "13. Contact", content: `For questions, issues, or concerns, please use the official GitHub repository of the project.`},
+                    {subtitle: "", content: `Note: This app stores your API keys and Quizzes locally in a database file. For your security, do not share your database 
+                        files or computer access with others.`}
                 ]}
             />
         </div>

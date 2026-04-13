@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {Routes, Route, Link} from "react-router-dom";
 import geniz_logo from "../assets/geniz_logo.png";
-import axios from 'axios';
-
-
-//axios request to get user data
-const api = axios.create({
-    baseURL: 'http://localhost:8080',
-    withCredentials: true
-});
+import api from "../api/apiClient";
 
 //function to make an api call to the backend and retrieve user profile pic and name 
 const UserDataBlock = () =>{
@@ -24,7 +17,7 @@ const UserDataBlock = () =>{
 
             } catch (err) {
                 if (err.response?.status === 401){
-                    window.location.replace('http://localhost:8080/oauth2/authorization/auth0');
+                    window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
                     return;
                 }
             } finally {

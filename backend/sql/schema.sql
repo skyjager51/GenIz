@@ -30,4 +30,12 @@ CREATE TABLE IF NOT EXISTS discussions(
     FOREIGN KEY (chat_id) REFERENCES chats (chat_id) ON DELETE CASCADE
 );
 
+-- Table for online model values 
+CREATE TABLE IF NOT EXISTS online_model(
+    model_id INT NOT NULL AUTO_INCREMENT,
+    model_url VARCHAR(2083) UNIQUE,
+    model_name VARCHAR(200) UNIQUE,
+    api_key VARCHAR(500) UNIQUE
+);
+
 COMMIT;

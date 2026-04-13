@@ -10,6 +10,8 @@ import capstoneProject.Lorenzo.genIz.DTO.entity_dto.UserDataDTO;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqChatDto;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqDiscussionDto;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqModelSetting;
+import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqOnlineModelDto;
+import capstoneProject.Lorenzo.genIz.DTO.response_dto.ResponseOnlineModelDto;
 
 public interface QuizDaoInterface {
 
@@ -32,4 +34,10 @@ public interface QuizDaoInterface {
     public ChatDataDto updateChat(PostReqChatDto postReqChatDto);
 
     public void deleteDiscussion(Integer discussionId);
+
+    public void saveNewOnlineModelSettings(PostReqOnlineModelDto postReqOnlineModelDto);
+
+    public ResponseOnlineModelDto retrieveOnlineModelSettings();
+
+    public void deleteOnlineModelSettings(); 
 }
