@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {Routes, Route, Link} from "react-router-dom";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { PiExport } from "react-icons/pi";
 import { IoIosSend } from "react-icons/io";
@@ -105,8 +106,10 @@ function ChatControl({setErrorMessage, setErrorText}){
                     refreshFlag={refreshFlag}
                 />
 
-                {/* button to logout the current user account */}
-                <button type="submit" onClick={()=>genizApiCalls.logout(setErrorMessage, setErrorText)} className="logout-button">Logout</button> 
+                {/* button to open settings page */}
+                <Link to={"/Settings"} className="settings-element">
+                    <button className="settings-button">Settings</button>
+                </Link>
             </div>
 
             <div className="discussion-list">

@@ -252,7 +252,7 @@ export const genizApiCalls = {
         }
     },
 
-    logout : async(setErrorMessage, setErrorText) => {
+    logout : async() => {
         try{
             const response = await api.get('http://localhost:24987/logout');
             console.log(response);
@@ -260,7 +260,7 @@ export const genizApiCalls = {
             
         } catch(err) {
             if (err.response?.status === 500){
-                wrapdefaultActions(setErrorMessage, setErrorText, err);
+                alert("Failed to logout.")
             } 
         }
     },
@@ -285,5 +285,35 @@ export const genizApiCalls = {
         } catch(err) {
             wrapdefaultActions(setErrorMessage, setErrorText, err);
         }
+    },
+
+    //save the new model files 
+    saveOnlineModelSettings : async(modelUrl, modelName, apiKey) => {
+        try{
+            const response = api.post('/online-model/settings/new-settings', 
+                {model_url: modelUrl, model_name: modelName, api_key: apiKey}
+            );
+
+            if(response.status === 200){
+                const button = document.getElementsByClassName('online-model-button')[0];
+            
+                if (button) {
+                    button.style.backgroundColor = 'green'; 
+
+                    setTimeout(() => {
+                        button.style.backgroundColor = '#F7F8FE';
+                    }, 3000);
+                }
+            }
+        } catch(err){
+            if (err.response?.status === 401){
+                window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
+                return;
+            }
+        }
+    },
+
+    deleteOnlineModelSettings : async() => {
+        
     }
 }
