@@ -14,7 +14,7 @@ public class OnlineModelEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="model_id")
-    private Integer id = 1;
+    private Integer id;
 
     @Column(name="model_url")
     private String modelUrl;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { genizApiCalls } from "../api/apiFunctions";
+import ErrorMessage from "./ErrorMessage";
 
 
 function Settings(){

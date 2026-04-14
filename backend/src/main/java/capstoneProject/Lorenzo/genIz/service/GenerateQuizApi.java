@@ -36,21 +36,19 @@ public class GenerateQuizApi implements GenerateQuizApiInterface{
     @Value("${MODEL_URL}")
     private String modelUrl;
 
-    // @Value("${EXTERNAL_MODEL_API_KEY}")
-    // private String modelApiKey;
-
-    // @Value("${EXTERNAL_MODEL_NAME}")
-    // private String extModelName;
-
-    // @Value("${EXTERNAL_MODEL_URL}")
-    // private String extModelUrl;
-
     private ResponseOnlineModelDto responseOnlineModelDto;
     
     //populate the DTO after class initialization (neede because quizDaoService must be created before this query)
     @PostConstruct
     private void retrieveOnlineModelSettings(){
-        responseOnlineModelDto = quizDaoService.retrieveOnlineModelSettings();
+        try {
+            responseOnlineModelDto = quizDaoService.retrieveOnlineModelSettings();
+        } catch (Exception e) {
+            responseOnlineModelDto = new ResponseOnlineModelDto();
+            responseOnlineModelDto.setModel_url("null");
+            responseOnlineModelDto.setModel_name("null");
+            responseOnlineModelDto.setApi_key("null");
+        }
     } 
 
     //initializing the HTTP client

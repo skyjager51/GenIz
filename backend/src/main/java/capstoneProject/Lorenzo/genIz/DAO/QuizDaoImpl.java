@@ -360,17 +360,23 @@ public class QuizDaoImpl implements QuizDaoInterface{
         
         //retrieve current values 
         OnlineModelEntity currentValues = entityManager.find(OnlineModelEntity.class, 1);
+        if(currentValues == null){
+            currentValues = new OnlineModelEntity();
+            currentValues.setModelUrl("null");
+            currentValues.setModelName("null");
+            currentValues.setApiKey("null");
+        }
 
         //check what has been modified and update it 
-        if(postReqOnlineModelDto.getModel_url() != null || postReqOnlineModelDto.getModel_url() != ""){
+        if(postReqOnlineModelDto.getModel_url() != null && !postReqOnlineModelDto.getModel_url().isEmpty()){
             currentValues.setModelUrl(postReqOnlineModelDto.getModel_url());
         }
 
-        if(postReqOnlineModelDto.getModel_name() != null || postReqOnlineModelDto.getModel_name() != ""){
+        if(postReqOnlineModelDto.getModel_name() != null && !postReqOnlineModelDto.getModel_name().isEmpty()){
             currentValues.setModelName(postReqOnlineModelDto.getModel_name());
         }
 
-        if(postReqOnlineModelDto.getApi_key() != null || postReqOnlineModelDto.getApi_key() != ""){
+        if(postReqOnlineModelDto.getApi_key() != null && !postReqOnlineModelDto.getApi_key().isEmpty()){
             currentValues.setApiKey(postReqOnlineModelDto.getApi_key());
         }
 
@@ -385,6 +391,12 @@ public class QuizDaoImpl implements QuizDaoInterface{
 
         //retrieve current model settings
         OnlineModelEntity currentValues = entityManager.find(OnlineModelEntity.class, 1);
+        if(currentValues == null){
+            currentValues = new OnlineModelEntity();
+            currentValues.setModelUrl("null");
+            currentValues.setModelName("null");
+            currentValues.setApiKey("null");
+        }
 
         //map the DTO
         ResponseOnlineModelDto responseOnlineModelDto = new ResponseOnlineModelDto();
@@ -405,7 +417,12 @@ public class QuizDaoImpl implements QuizDaoInterface{
         OnlineModelEntity currentValues = entityManager.find(OnlineModelEntity.class, 1);
 
         //delete current model settings
-        entityManager.remove(currentValues);
+        if (currentValues != null) {
+            currentValues.setModelUrl("null");
+            currentValues.setModelName("null");
+            currentValues.setApiKey("null");
+            entityManager.merge(currentValues);
+        }
     }
 
 }

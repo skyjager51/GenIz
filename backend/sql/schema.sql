@@ -33,9 +33,14 @@ CREATE TABLE IF NOT EXISTS discussions(
 -- Table for online model values 
 CREATE TABLE IF NOT EXISTS online_model(
     model_id INT NOT NULL AUTO_INCREMENT,
-    model_url VARCHAR(2083) UNIQUE,
+    model_url TEXT,
     model_name VARCHAR(200) UNIQUE,
-    api_key VARCHAR(500) UNIQUE
+    api_key VARCHAR(500) UNIQUE,
+    PRIMARY KEY (model_id)
 );
+
+-- Default url and name for google gemini model
+INSERT INTO online_model(model_url, model_name, api_key)
+VALUES ('https://generativelanguage.googleapis.com/v1beta/openai/v1/chat/completions', 'gemini-2.5-flash', 'none');
 
 COMMIT;

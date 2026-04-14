@@ -290,7 +290,7 @@ export const genizApiCalls = {
     //save the new model files 
     saveOnlineModelSettings : async(modelUrl, modelName, apiKey, setErrorMessage, setErrorText) => {
         try{
-            const response = api.post('/online-model/settings/new-settings', 
+            const response = await api.post('/online-model/settings/new-settings', 
                 {model_url: modelUrl, model_name: modelName, api_key: apiKey}
             );
 
@@ -319,9 +319,9 @@ export const genizApiCalls = {
     //delete current online model info 
     deleteOnlineModelSettings : async(setErrorMessage, setErrorText) => {
         try{
-            const response = api.delete('/online-model/settings/delete-settings');
+            const response = await api.delete('/online-model/settings/delete-settings');
             if(response.status === 200){
-                const button = document.getElementsByClassName('online-model-button')[0];
+                const button = document.getElementsByClassName('delete-button')[0];
             
                 if (button) {
                     button.style.backgroundColor = 'green'; 
