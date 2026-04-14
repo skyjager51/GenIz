@@ -252,7 +252,7 @@ export const genizApiCalls = {
         }
     },
 
-    logout : async() => {
+    logout : async(setErrorMessage, setErrorText) => {
         try{
             const response = await api.get('http://localhost:24987/logout');
             console.log(response);
@@ -260,7 +260,7 @@ export const genizApiCalls = {
             
         } catch(err) {
             if (err.response?.status === 500){
-                alert("Failed to logout.")
+                wrapdefaultActions(setErrorMessage, setErrorText, err)
             } 
         }
     },
@@ -288,7 +288,7 @@ export const genizApiCalls = {
     },
 
     //save the new model files 
-    saveOnlineModelSettings : async(modelUrl, modelName, apiKey) => {
+    saveOnlineModelSettings : async(modelUrl, modelName, apiKey, setErrorMessage, setErrorText) => {
         try{
             const response = api.post('/online-model/settings/new-settings', 
                 {model_url: modelUrl, model_name: modelName, api_key: apiKey}
@@ -310,10 +310,35 @@ export const genizApiCalls = {
                 window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
                 return;
             }
+            else{
+                wrapdefaultActions(setErrorMessage, setErrorText, err);
+            }
         }
     },
 
-    deleteOnlineModelSettings : async() => {
-        
+    //delete current online model info 
+    deleteOnlineModelSettings : async(setErrorMessage, setErrorText) => {
+        try{
+            const response = api.delete('/online-model/settings/delete-settings');
+            if(response.status === 200){
+                const button = document.getElementsByClassName('online-model-button')[0];
+            
+                if (button) {
+                    button.style.backgroundColor = 'green'; 
+
+                    setTimeout(() => {
+                        button.style.backgroundColor = '#F7F8FE';
+                    }, 3000);
+                }
+            }
+        } catch(err){
+            if (err.response?.status === 401){
+                window.location.replace('http://localhost:24987/oauth2/authorization/auth0');
+                return;
+            }
+            else{
+                wrapdefaultActions(setErrorMessage, setErrorText, err);
+            }
+        }
     }
 }

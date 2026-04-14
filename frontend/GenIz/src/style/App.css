@@ -492,7 +492,7 @@ input{
 .settings-page{
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: safe center;
 	align-items: center;
 	height: 100vh !important;
 	overflow-y: auto !important; 
@@ -505,7 +505,6 @@ input{
 	display: flex;
 	flex-direction: column;
 	width: 50%;
-	gap: 2vh;
 	margin: 2%;
 	background-color: white;
 	padding: 20px;
@@ -561,4 +560,9 @@ input{
 	background-color: #efbec4;
 	border-radius: 5px;	
 	margin: 1.5vh;
+}
+
+.settings-page input{
+	margin-bottom: 15px;
+	border: 0.5px solid rgb(142, 142, 142);
 }

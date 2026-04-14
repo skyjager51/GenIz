@@ -27,7 +27,7 @@ public class OnlineModelController {
     }
 
     //delete method to remove current model settings 
-    @DeleteMapping("delete-settings")
+    @DeleteMapping("/delete-settings")
     public void deleteSettings(){
         implementQuizDaoMethodsInterface.deleteOnlineModelSettings();
     }
