@@ -14,9 +14,11 @@ import capstoneProject.Lorenzo.genIz.DTO.entity_dto.UserDataDTO;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqChatDto;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqDiscussionDto;
 import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqModelSetting;
+import capstoneProject.Lorenzo.genIz.DTO.request_dto.PostReqOnlineModelDto;
 import capstoneProject.Lorenzo.genIz.DTO.response_dto.ResponseChatListDto;
 import capstoneProject.Lorenzo.genIz.DTO.response_dto.ResponseDiscussionListDto;
 import capstoneProject.Lorenzo.genIz.DTO.response_dto.ResponseModelSettingDto;
+import capstoneProject.Lorenzo.genIz.DTO.response_dto.ResponseOnlineModelDto;
 
 @Service
 public class QuizDaoService implements ImplementQuizDaoMethodsInterface{
@@ -196,6 +198,33 @@ public class QuizDaoService implements ImplementQuizDaoMethodsInterface{
 
         //call the delete method
         quizDaoImpl.deleteDiscussion(discussionId);
+    }
+
+    @Override
+    public void saveNewOnlineModelSettings(PostReqOnlineModelDto postReqOnlineModelDto) {
+        
+        //no strict format requirements
+        quizDaoImpl.saveNewOnlineModelSettings(postReqOnlineModelDto);
+    }
+
+    @Override
+    public ResponseOnlineModelDto retrieveOnlineModelSettings() {
+        
+        ResponseOnlineModelDto responseOnlineModelDto = quizDaoImpl.retrieveOnlineModelSettings();
+
+        //validate data existance
+        if(responseOnlineModelDto.getModel_url() == null || responseOnlineModelDto.getModel_url() == ""){throw new IllegalArgumentException("Model Url is not defined.");}
+        if(responseOnlineModelDto.getModel_name() == null || responseOnlineModelDto.getModel_name() == ""){throw new IllegalArgumentException("Model Name is not defined.");}
+        if(responseOnlineModelDto.getApi_key() == null || responseOnlineModelDto.getApi_key() == ""){throw new IllegalArgumentException("Api Key not defined.");}
+
+        return responseOnlineModelDto;
+    }
+
+    @Override
+    public void deleteOnlineModelSettings() {
+        
+        //no strict format requirements
+        quizDaoImpl.deleteOnlineModelSettings();
     }
 
 }
