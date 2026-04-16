@@ -3,7 +3,7 @@
 services:
   #creating db service
   database:
-    image: lorenzofaccio/datab-arm:0.0.3
+    image: lorenzofaccio/datab-x86:0.0.3
     ports:
       - "3306:3306"
     volumes:
@@ -22,13 +22,13 @@ services:
 
   #creating backend instance
   backend:
-    image: lorenzofaccio/backend-arm:0.0.3
+    image: lorenzofaccio/backend-x86:0.0.3
     ports:
       - "24987:8080"
 
     #specify bond mounts for exported txts
     volumes: 
-      - ~/GenIz_txt:/exported_quizzes
+      - ~/Documents/GenIzApp/GenIz_txt:/exported_quizzes
 
     #defining local model
     models:
@@ -37,9 +37,6 @@ services:
     environment:
       MODEL_URL: 'http://model-runner.docker.internal/v1/chat/completions'
       LLM_MODEL: 'ai/qwen2.5:3B-Q4_K_M'
-      #EXTERNAL_MODEL_NAME: 'gemini-2.5-flash'
-      #EXTERNAL_MODEL_URL: 'https://generativelanguage.googleapis.com/v1beta/openai/v1/chat/completions'
-      #EXTERNAL_MODEL_API_KEY: 'none'
       DB_URL: jdbc:mysql://database:3306/geniz
       DB_PASSWORD: sample_passw!345
       DB_USER: root
@@ -55,7 +52,7 @@ services:
 
   #define frontend services 
   frontend: 
-    image: lorenzofaccio/frontend-arm:0.0.4
+    image: lorenzofaccio/frontend-x86:0.0.3
     ports: 
      - "24991:5173"
 
