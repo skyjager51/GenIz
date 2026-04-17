@@ -1,0 +1,78 @@
+/*settings page*/
+.settings-page{
+	display: flex;
+	flex-direction: column;
+	justify-content: safe center;
+	align-items: center;
+	height: 100vh !important;
+	overflow-y: auto !important; 
+	gap: 15px;
+	padding: 20px;
+}
+
+/*settings form to sent new online model settings*/
+.new-online-model-settings{
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	margin: 2%;
+	background-color: white;
+	padding: 20px;
+	border: 1px solid #dde1e7;
+	border-radius: 15px;
+	box-shadow: 0 0 30px 5px rgb(212, 212, 212);
+}
+
+.online-model-button{
+	width: 20%;
+	margin-left: 40%;
+	margin-right: 40%;
+	border: 1px solid #dde1e7;
+	background-color: #ffffff;
+	border-radius: 5px;	
+}
+
+.settings-page p{
+	color: #7d7d7d;
+}
+
+.logout-section{
+	width: 50%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid;
+	padding: 20px;
+	border: 1px solid #dde1e7;
+	border-radius: 15px;
+	box-shadow: 0 0 20px 3px rgb(212, 212, 212);
+	background-color: white;
+}
+
+.delete-section{
+	width: 50%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid;
+	padding: 20px;
+	border: 1px solid #dde1e7;
+	border-radius: 15px;
+	box-shadow: 0 0 30px 5px rgb(212, 212, 212);
+	background-color: white;
+}
+
+.delete-button{
+	width: 45%;
+	border: 1px solid #efbec4;
+	background-color: #efbec4;
+	border-radius: 5px;	
+	margin: 1.5vh;
+}
+
+.settings-page input{
+	margin-bottom: 15px;
+	border: 0.5px solid rgb(142, 142, 142);
+}

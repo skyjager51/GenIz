@@ -1,0 +1,152 @@
+/*main layout containing chat list + discussion view */
+.chat-discussion-panel{
+	height: calc(100vh - 100px);
+	display: flex;
+	flex-direction: row;
+}
+
+.model-selection{
+	display: flex;
+	flex-direction: row;
+	border: 0.5px solid #E2E8F0;
+	border-top: 0 !important;
+	border-left: 0 !important;
+	padding: 1vw;
+	position: sticky;
+	top: 0;
+	background-color: #FCFDFF;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 100;
+}
+
+/*tontainer for model on/off switch labels + toggle */
+.switch-button{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 15px;
+}
+
+/*active model label style */
+.model-lable-s{
+	color: #6D28D9;
+	font-weight: 600;
+}
+
+/*inactive model label style */
+.model-lable-ns{
+	color: #475569;
+}
+
+.online-model-selection{
+	display: flex;
+	flex-direction: row;
+	border: 0.5px solid #ece2f0;
+	border-top: 0 !important;
+	border-left: 0 !important;
+	padding: 1vw;
+	position: sticky;
+	top: 0;
+	background-color: #e1beef;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 100;
+}
+
+/* Notice about AI output quality after model switch section */
+.ai-statement{
+	color: #abafb5bc;
+	width: 30%;
+	margin-left: 40%;
+	margin-right: 40%;
+}
+
+/*text block style*/
+.text-block{
+	border: 1px solid #E2E8F0;
+	border-radius: 10px;
+	margin: 3%;
+	padding: 15px;
+	background-color: #FDFDFF;
+
+}
+
+.policy-text{
+	height: 90vh;
+	overflow-y: auto;
+}
+
+/*settings-button*/
+.settings-button{
+	width: 40%;
+	margin-left: 30%;
+	margin-right: 30%;
+	border: 1px solid #dde1e7;
+	background-color: #ffffff;
+	border-radius: 5px;	
+}
+
+.settings-element{
+	display: flex;
+	flex-direction: column;
+	margin-top: auto;
+}
+
+/*logout button*/
+.logout-button{
+	width: 45%;
+	border: 1px solid #e1beef;
+	background-color: #e1beef;
+	border-radius: 5px;	
+	margin: 1.5vh;
+}
+
+/*spinning wheel*/
+.arc {
+  --b: 5px; /* the boder thickness */
+  --a: 240deg; /* control the progression */
+  
+  width: 25px;
+  aspect-ratio: 1;
+  padding: var(--b);
+  border-radius: 50%;
+  background: #ffdd00;
+  --_g:/var(--b) var(--b) no-repeat
+    radial-gradient(50% 50%,#000 97%,#0000);
+  mask: top var(--_g),
+    calc(50% + 50%*sin(var(--a))) 
+    calc(50% - 50%*cos(var(--a))) var(--_g),
+    linear-gradient(#0000 0 0) content-box intersect,
+    conic-gradient(#000 var(--a),#0000 0);
+	animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+	from{}
+	to{
+		transform: rotate(360deg);
+	}
+}
+
+/*style for error message*/
+.error-container{
+	background-color: #fde7e4;
+	border: 1px solid #baa499;
+	color: #5e453f;
+	border-radius: 10px;
+	width: 25vw;
+	width: 25vw;
+	min-height: 15vh;
+	padding: 10px;
+	position: absolute;
+	left: 72vw;
+	z-index: 999;
+	margin-top: 5px;
+	animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn{
+	from { opacity: 0; transform: translateY(-10px); }
+  	to { opacity: 1; transform: translateY(0); }
+}

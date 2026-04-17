@@ -9,6 +9,9 @@ import { genizApiCalls } from "../api/apiFunctions";
 import { CurrentUserChats, CurrentDiscussions, CurrentModelUsageType } from "../api/apiComponents";
 import api from "../api/apiClient";
 import wrapdefaultActions from "../api/errorHelperFunction";
+import '../style/Chat.css'
+import '../style/Discussion.css'
+import '../style/Messages.css'
 
 function ChatControl({setErrorMessage, setErrorText}){
     //currently selected chat id (used by Chat item highlighting)
