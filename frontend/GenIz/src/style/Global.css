@@ -1,0 +1,34 @@
+/* Global styles */
+body, html{
+	padding: 0px;
+	margin: 0px;
+	background-color: #F8F9FE;  
+	color: #0F172A;
+	height: 100%;
+	/* overflow: hidden; */
+}
+
+body::-webkit-scrollbar{
+  scrollbar-width: none;
+}
+
+a{
+	text-decoration: none;
+	color: #1A202C;
+}
+
+input{
+	border: 1px solid #c8ccd2;
+	border-radius: 20px;
+	padding: 5px;
+}
+
+.button{
+	border-radius: 5px;
+	border: 1px solid #6D28D9;
+	background-color: #ffffff;
+}
+
+.button:hover{
+	background-color: #e1beef;
+}

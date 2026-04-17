@@ -5,7 +5,8 @@ import ModelGuide from './ModelGuide';
 import PrivacyPolicy from './PrivacyPolicy';
 import Header from './Header';
 import Settings from './Settings';
-import '../style/App.css'
+import '../style/Global.css'
+import '../style/Components.css'
 
 
 function App(){

@@ -1,0 +1,77 @@
+/*left side list of chats */
+.chat-list{
+	border: 0.5px solid #E2E8F0 ;
+	width: 20%;
+	background-color: #FBFBFE;
+	overflow-y: auto;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+.chat-list::-webkit-scrollbar{
+	scrollbar-width: none;
+}
+
+.chat-name{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#chats-lable{
+	color: #94A3B8;
+	margin-left: 10%;
+}
+
+/*button that adds a new chat entry */
+.add-chat{
+	padding: 1vw;
+	width: 80%;
+	margin: 5% 10% 5% 10%;
+	color: #FDFDFF;
+	background-color: #0F172A;
+	border-radius: 15px;
+	border: 0px;
+}
+
+/*individual chat row style */
+.chat-element{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 5%;
+	margin: 2% 5% 2% 5%;
+	width: 90%;
+	border-radius: 15px;
+	color: #475569;
+}
+
+.chat-element:hover{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 5%;
+	margin: 2% 5% 2% 5%;
+	width: 90%;
+	border-radius: 15px;
+	color: #000000;
+	background-color: #eff0f8;
+}
+
+/*style for currently selected chat in list */
+.selected-class{
+	background-color: #FFFFFF;
+	color: #6D28D9;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 5%;
+	border: 1px solid #E2E8F0;
+	margin: 2% 5% 2% 5%;
+	width: 90%;
+	border-radius: 15px;
+}

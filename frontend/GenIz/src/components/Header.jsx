@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {Routes, Route, Link} from "react-router-dom";
 import geniz_logo from "../assets/geniz_logo.png";
 import api from "../api/apiClient";
+import '../style/Header.css'
 
 //function to make an api call to the backend and retrieve user profile pic and name 
 const UserDataBlock = () =>{

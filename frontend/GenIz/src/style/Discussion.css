@@ -1,0 +1,111 @@
+.discussion-list{
+	display: flex;
+	flex-direction: column;
+	flex-grow: auto;
+	border: 0.5px solid #E2E8F0;
+	width: 80%;
+	overflow-y: auto;
+	background-color: #F7F8FE;
+}
+
+.discussion-list::-webkit-scrollbar{
+	scrollbar-width: none;
+}
+
+.discussion-container{
+	padding: 20px;
+}
+
+.discussion-container{
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+/*title in discussion header showing selected chat */
+.discussion-chat-name{
+	color: #1E293B;
+	font-size: 25px;
+	margin: 0;
+	font-weight: 600;
+}
+
+.user-pdf-name{
+	display: flex;
+	background-color: #6141E8;
+	border: 1px solid #E2E8F0;
+	border-radius: 10px 10px 0px 10px;
+	color: #E2E8F0;
+	width: fit-content;
+	align-items: center;
+	justify-content: right;
+	padding: 0px 8px 0px 8px;
+	align-self: flex-end;
+}
+
+/*response quiz chat block*/
+.quiz-content{
+	display: flex;
+	background-color: #FFFFFF;
+	border: 1px solid #E2E8F0;
+	border-radius: 10px 10px 10px 0px;
+	align-items: center;
+	justify-content: right;
+	padding: 0px 12px 0px 18px;
+	align-self: flex-start;
+	width: fit-content;
+	padding-bottom: 10px;
+}
+
+.end-chat-line{
+	background-color: #E2E8F0;
+	height: 1px;
+	width: 100%;
+	border: none;
+}
+
+h3:hover{
+	color: #6D28D9;
+}
+
+.quizOptions{
+	list-style-type: none;
+
+}
+
+.quiz-blur-element{
+	filter: blur(5px);
+	width: fit-content;
+}
+
+.quiz-blur-element:hover{
+	filter: blur(0px);
+	z-index: -1;
+}
+
+.quizzes{
+	width: fit-content;
+}
+
+.correct-answer{
+	color: #6D28D9;
+	font-weight: bolder;
+}
+
+.delete-chat-block{
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	align-items: center;
+}
+
+/*modify chat name class*/
+.modify-chat-name{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 3%;
+	border-left: 1px solid #000000;
+	padding-left: 18% ;
+}
