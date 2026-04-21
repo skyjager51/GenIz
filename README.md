@@ -118,5 +118,16 @@ If you have a suggestion that would make this better, please fork the repo and c
 <br>
 
 <hr>
-If the application does not open a browser tab by default, users can find the application by typing ```localhost:24991``` in a browser tab.
+If the application does not open a browser tab by default, users can find the application by typing "localhost:24991" in a browser tab.
+<br>
+<hr>
 
+# Developer Documentation 
+
+### API Docs
+
+To view API documentation for the application’s endpoints, their access points, return types and accepted/returned bodies, simply launch the GenIz application and navigate to ```http://localhost:24987/swagger-ui.html``` in a browser tab.
+
+
+### Source code Docs
+In the root of the application folder, you can find a file called GenIz_developer_docs.pdf. This document contains folder, hierarchy, and file structure, comprehending source code visualisation and methods structure, return type, and links with other objects.
