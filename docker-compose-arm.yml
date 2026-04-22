@@ -13,7 +13,7 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 3s
-      retries: 10
+      retries: 9
 
     #setup env variables for the db
     environment:
@@ -60,7 +60,7 @@ services:
 models:
     llm:
       model: ai/qwen2.5:3B-Q4_K_M
-      context_size: 4096
+      context_size: 16384
 
 #specify volumes
 volumes:
