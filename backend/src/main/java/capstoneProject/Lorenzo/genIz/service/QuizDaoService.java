@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import capstoneProject.Lorenzo.genIz.DAO.QuizDaoImpl;
+import capstoneProject.Lorenzo.genIz.DAO.QuizDaoInterface;
 import capstoneProject.Lorenzo.genIz.DTO.entity_dto.ChatDataDto;
 import capstoneProject.Lorenzo.genIz.DTO.entity_dto.DiscussionDataDto;
 import capstoneProject.Lorenzo.genIz.DTO.entity_dto.UserDataDTO;
@@ -24,9 +24,9 @@ import capstoneProject.Lorenzo.genIz.DTO.response_dto.ResponseOnlineModelDto;
 public class QuizDaoService implements ImplementQuizDaoMethodsInterface{
 
     //injecting the quizDao implementation
-    QuizDaoImpl quizDaoImpl;
+    QuizDaoInterface quizDaoImpl;
 
-    public QuizDaoService(QuizDaoImpl quizDaoImpl) {
+    public QuizDaoService(QuizDaoInterface quizDaoImpl) {
         this.quizDaoImpl = quizDaoImpl;
     }
 
