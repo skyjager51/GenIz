@@ -89,6 +89,8 @@ This is a brief guide on how to use GenIz.
 ### Outside the App
 *   Users can change the local model by modifyng the model tag in the docker compose. To find the docker compose, navigate to 'your root -> users -> your username -> GenIzApp' and open it with your preferred file editor. Inside the docker compose, at the botton search for a tag like models: llm: model:, then, modify the model name with the desired one (look at docker hub to identify available models)(consider resource utilization from larger models). Then, users should also change with the same model name the voice inside backend: environment: LLM_MODEL. In any case, the model will not be loaded in RAM until it recieve it's first call.
 
+*   Users are also able to manage the context size (in tokens) of the model, meaning that a user can increase or decrease the maximum amount of context that the local model is able to handle. Under the model: llm: context_size, users can find a numeric value that can be modified, the most commun values are 2048, 4096, 8192, default (16384) and so on. Users should consider that the larger is the context, the bigger is the amount of RAM/VRAM required.
+
 *   Inside the compose file, users can also find default database password, it's highly reccomended to change it with a personal defined one, both in the database: and in the backend: sections.
 
 *   The exported quizzes can be found inside the GenIz_txt folder generated inside the file system Documents folder.
@@ -118,5 +120,16 @@ If you have a suggestion that would make this better, please fork the repo and c
 <br>
 
 <hr>
-If the application does not open a browser tab by default, users can find the application by typing ```localhost:24991``` in a browser tab.
+If the application does not open a browser tab by default, users can find the application by typing "localhost:24991" in a browser tab.
+<br>
+<hr>
 
+# Developer Documentation 
+
+### API Docs
+
+To view API documentation for the application’s endpoints, their access points, return types and accepted/returned bodies, simply launch the GenIz application and navigate to ```http://localhost:24987/swagger-ui.html``` in a browser tab.
+
+
+### Source code Docs
+In the root of the application folder, you can find a file called GenIz_developer_docs.pdf. This document contains folder, hierarchy, and file structure, comprehending source code visualisation and methods structure, return type, and links with other objects.

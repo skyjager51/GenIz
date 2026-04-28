@@ -14,10 +14,10 @@ import capstoneProject.Lorenzo.genIz.api_format.request.request_parameters.QuizG
 public class LocalModelApiFlowAggregator implements ApiFlowAggregatorInterface{
 
     //injecting services needed to perform business logic 
-    GenerateQuizApi generateQuizApi;
-    JsonValidation jsonValidation;
+    GenerateQuizApiInterface generateQuizApi;
+    JsonValidationInterface jsonValidation;
 
-    public LocalModelApiFlowAggregator(GenerateQuizApi generateQuizApi, JsonValidation jsonValidation) {
+    public LocalModelApiFlowAggregator(GenerateQuizApiInterface generateQuizApi, JsonValidationInterface jsonValidation) {
         this.generateQuizApi = generateQuizApi;
         this.jsonValidation = jsonValidation;
     }
